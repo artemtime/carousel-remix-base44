@@ -7,7 +7,7 @@ import EmptyState from "@/components/EmptyState";
 import SeriesDialog from "@/components/SeriesDialog";
 
 export const Route = createFileRoute("/_authed/author/")({
-  head: () => ({ meta: [{ title: "Автор — Carousel Remix" }] }),
+  head: () => ({ meta: [{ title: "Автор — Цифровые сотрудники" }] }),
   component: AuthorPage,
 });
 

@@ -7,7 +7,7 @@ import { useSettings } from "@/hooks/use-settings";
 import ImageModelPicker from "@/components/ImageModelPicker";
 
 export const Route = createFileRoute("/_authed/settings")({
-  head: () => ({ meta: [{ title: "Настройки — Carousel Remix" }] }),
+  head: () => ({ meta: [{ title: "Настройки — Цифровые сотрудники" }] }),
   component: SettingsPage,
 });
 
@@ -195,4 +195,3 @@ function Field({ label, children }) {
     </label>
   );
 }
-

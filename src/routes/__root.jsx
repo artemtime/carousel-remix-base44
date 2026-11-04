@@ -11,7 +11,7 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Carousel Remix — Разведчик, Автор, Публикатор" },
+      { title: "Цифровые сотрудники — Разведчик, Автор, Публикатор" },
       { name: "description", content: "Студия каруселей: разведка трендов, свои стили и герои, рендер слайдов и текст поста." },
     ],
     links: [

@@ -16,7 +16,7 @@ import { downloadArtifact } from "@/lib/download-artifact";
 import { isExactMode } from "@/lib/modes";
 
 export const Route = createFileRoute("/_authed/publish")({
-  head: () => ({ meta: [{ title: "Публикатор — Carousel Remix" }] }),
+  head: () => ({ meta: [{ title: "Публикатор — Цифровые сотрудники" }] }),
   component: PublishPage,
 });
 

@@ -9,7 +9,7 @@ import { EDITORIAL_MODES, STAGES, PRESETS } from "@/lib/editorial-policy";
 import { getEditorialState, saveEditorial, startEditorialProbe, acceptEditorialProbe } from "@/lib/editorial";
 import { bufferChannels } from "@/lib/buffer";
 
-export const Route = createFileRoute("/_authed/editorial")({head:()=>({meta:[{title:"Редакция — Carousel Remix"}]}),component:EditorialPage});
+export const Route = createFileRoute("/_authed/editorial")({head:()=>({meta:[{title:"Редакция — Цифровые сотрудники"}]}),component:EditorialPage});
 const input = "w-full rounded-lg border border-border bg-background px-3 py-2 text-[13px] outline-none focus:border-primary disabled:opacity-50";
 function Field({label,children,hint}) { return <label className="block space-y-1.5"><span className="block text-[12px] text-muted-foreground">{label}</span>{children}{hint && <span className="block text-[11px] leading-relaxed text-muted-foreground">{hint}</span>}</label>; }
 function Section({number,title,description,children}) { return <section className="space-y-4 rounded-2xl border border-border bg-card p-5"><div className="flex items-start gap-3"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-primary/15 text-[12px] text-primary">{number}</span><div><h2 className="text-[16px] font-medium">{title}</h2><p className="mt-1 text-[12px] text-muted-foreground">{description}</p></div></div>{children}</section>; }

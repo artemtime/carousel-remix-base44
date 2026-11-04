@@ -8,7 +8,7 @@ import { getEditorialState, setEditorialPause, collectIdeas, decideItem, approve
 import { refreshDelivery } from "@/lib/buffer";
 import { EDITORIAL_MODES, ITEM_LABELS } from "@/lib/editorial-policy";
 
-export const Route=createFileRoute("/_authed/")({head:()=>({meta:[{title:"Сегодня в редакции — Carousel Remix"}]}),component:DashboardPage});
+export const Route=createFileRoute("/_authed/")({head:()=>({meta:[{title:"Сегодня в редакции — Цифровые сотрудники"}]}),component:DashboardPage});
 const button="inline-flex items-center justify-center gap-1.5 rounded-lg border border-border px-3 py-2 text-[12px] hover:bg-accent disabled:opacity-40";
 const localTime=(value,zone)=>value?new Intl.DateTimeFormat("ru",{timeZone:zone,day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}).format(new Date(value)):"Время пока не назначено";
 function DashboardPage(){

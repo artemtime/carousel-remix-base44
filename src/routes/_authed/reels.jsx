@@ -11,7 +11,7 @@ import { useSettings } from "@/hooks/use-settings";
 import { readReel, makeScenario, scoutHandle } from "@/lib/scout";
 
 export const Route = createFileRoute("/_authed/reels")({
-  head: () => ({ meta: [{ title: "Рилсы — Carousel Remix" }] }),
+  head: () => ({ meta: [{ title: "Рилсы — Цифровые сотрудники" }] }),
   component: ReelsPage,
 });
 

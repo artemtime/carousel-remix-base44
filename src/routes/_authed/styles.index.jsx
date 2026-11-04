@@ -8,7 +8,7 @@ import SlideCanvas from "@/components/SlideCanvas";
 import NewStyleDialog from "@/components/styles/NewStyleDialog";
 
 export const Route = createFileRoute("/_authed/styles/")({
-  head: () => ({ meta: [{ title: "Мои стили — Carousel Remix" }] }),
+  head: () => ({ meta: [{ title: "Мои стили — Цифровые сотрудники" }] }),
   component: StylesPage,
 });
 

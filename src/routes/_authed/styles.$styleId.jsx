@@ -14,7 +14,7 @@ import { heroPassport, saveHeroToLibrary } from "@/lib/heroes";
 import { normalizeProfile, profileForRole } from "@/lib/slide-renderer";
 
 export const Route = createFileRoute("/_authed/styles/$styleId")({
-  head: () => ({ meta: [{ title: "Стиль — Carousel Remix" }] }),
+  head: () => ({ meta: [{ title: "Стиль — Цифровые сотрудники" }] }),
   component: StyleDetailPage,
 });
 

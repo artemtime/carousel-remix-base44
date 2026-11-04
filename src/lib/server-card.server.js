@@ -16,7 +16,7 @@ async function fontFor(font, weight, characters) {
   const task = (async () => {
     const family = font.family.replace(/ /g, "+") + (font.variable ? `:wght@${weight}` : "");
     const cssUrl = `https://fonts.googleapis.com/css2?family=${family}&text=${encodeURIComponent(characters)}`;
-    const cssResponse=await fetch(cssUrl, { headers: { "User-Agent": "CarouselRemix/1.0" }, redirect: "manual", signal: AbortSignal.timeout(15000) });
+    const cssResponse=await fetch(cssUrl, { headers: { "User-Agent": "DigitalEmployees/1.0" }, redirect: "manual", signal: AbortSignal.timeout(15000) });
     if(!cssResponse.ok)throw new Error("Не загрузился выбранный шрифт для фоновой сборки");
     const css = await cssResponse.text();
     const url = /src:\s*url\((https:\/\/fonts\.gstatic\.com\/[^)]+)\)/.exec(css)?.[1];

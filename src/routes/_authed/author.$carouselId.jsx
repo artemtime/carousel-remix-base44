@@ -29,7 +29,7 @@ import { slideOptions } from "@/lib/slide-options";
 import { startRender, stopRender, editSlide, changeCarouselHero, changeImageModel } from "@/lib/render-queue";
 
 export const Route = createFileRoute("/_authed/author/$carouselId")({
-  head: () => ({ meta: [{ title: "Студия — Carousel Remix" }] }),
+  head: () => ({ meta: [{ title: "Студия — Цифровые сотрудники" }] }),
   component: StudioPage,
 });
 
@@ -424,4 +424,3 @@ function StudioPage() {
     </div>
   );
 }
-

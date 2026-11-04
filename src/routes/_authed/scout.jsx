@@ -17,7 +17,7 @@ import { saveFromHit } from "@/lib/scout-save";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authed/scout")({
-  head: () => ({ meta: [{ title: "Разведчик — Carousel Remix" }] }),
+  head: () => ({ meta: [{ title: "Разведчик — Цифровые сотрудники" }] }),
   component: ScoutPage,
 });
 

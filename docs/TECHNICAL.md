@@ -1,4 +1,4 @@
-# Carousel Remix
+# Цифровые сотрудники
 
 Студия каруселей для Instagram, перенесённая с Telegram-бота
 [carousel-remix-bot](https://github.com/artemtime/carousel-remix-bot) на Base44.
