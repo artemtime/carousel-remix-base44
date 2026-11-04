@@ -1,0 +1,3358 @@
+{
+  "name": "\u0420\u0438\u0441\u043e\u0432\u0430\u043d\u0438\u0435 \u043a\u0430\u0440\u0443\u0441\u0435\u043b\u0435\u0439",
+  "description": "\u0421\u043e\u0445\u0440\u0430\u043d\u044f\u0435\u0442 \u0438 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u0442 \u043a\u0430\u0436\u0434\u044b\u0439 \u043a\u0430\u0434\u0440 \u043d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e \u043e\u0442 \u043e\u0442\u043a\u0440\u044b\u0442\u043e\u0439 \u0432\u043a\u043b\u0430\u0434\u043a\u0438",
+  "trigger": {
+    "config": {
+      "trigger_type": "entity",
+      "entity_name": "TaskQueue",
+      "events": [
+        "create"
+      ]
+    },
+    "condition": "${ .trigger.data.kind == \"draw_all\" and .trigger.data.status == \"queued\" }"
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "render_carousel",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "draw_panel_01": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_01",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 1"
+          }
+        }
+      },
+      {
+        "check_panel_01": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_01.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_01"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_01": {
+          "wait": "PT5S",
+          "then": "draw_panel_02",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_02": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_02",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 2"
+          }
+        }
+      },
+      {
+        "check_panel_02": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_02.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_02"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_02": {
+          "wait": "PT5S",
+          "then": "draw_panel_03",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_03": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_03",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 3"
+          }
+        }
+      },
+      {
+        "check_panel_03": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_03.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_03"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_03": {
+          "wait": "PT5S",
+          "then": "draw_panel_04",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_04": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_04",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 4"
+          }
+        }
+      },
+      {
+        "check_panel_04": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_04.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_04"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_04": {
+          "wait": "PT5S",
+          "then": "draw_panel_05",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_05": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_05",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 5"
+          }
+        }
+      },
+      {
+        "check_panel_05": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_05.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_05"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_05": {
+          "wait": "PT5S",
+          "then": "draw_panel_06",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_06": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_06",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 6"
+          }
+        }
+      },
+      {
+        "check_panel_06": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_06.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_06"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_06": {
+          "wait": "PT5S",
+          "then": "draw_panel_07",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_07": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_07",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 7"
+          }
+        }
+      },
+      {
+        "check_panel_07": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_07.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_07"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_07": {
+          "wait": "PT5S",
+          "then": "draw_panel_08",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_08": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_08",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 8"
+          }
+        }
+      },
+      {
+        "check_panel_08": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_08.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_08"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_08": {
+          "wait": "PT5S",
+          "then": "draw_panel_09",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_09": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_09",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 9"
+          }
+        }
+      },
+      {
+        "check_panel_09": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_09.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_09"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_09": {
+          "wait": "PT5S",
+          "then": "draw_panel_10",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_10": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_10",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 10"
+          }
+        }
+      },
+      {
+        "check_panel_10": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_10.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_10"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_10": {
+          "wait": "PT5S",
+          "then": "draw_panel_11",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_11": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_11",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 11"
+          }
+        }
+      },
+      {
+        "check_panel_11": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_11.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_11"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_11": {
+          "wait": "PT5S",
+          "then": "draw_panel_12",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_12": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_12",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 12"
+          }
+        }
+      },
+      {
+        "check_panel_12": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_12.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_12"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_12": {
+          "wait": "PT5S",
+          "then": "draw_panel_13",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_13": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_13",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 13"
+          }
+        }
+      },
+      {
+        "check_panel_13": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_13.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_13"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_13": {
+          "wait": "PT5S",
+          "then": "draw_panel_14",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_14": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_14",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 14"
+          }
+        }
+      },
+      {
+        "check_panel_14": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_14.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_14"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_14": {
+          "wait": "PT5S",
+          "then": "draw_panel_15",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_15": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_15",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 15"
+          }
+        }
+      },
+      {
+        "check_panel_15": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_15.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_15"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_15": {
+          "wait": "PT5S",
+          "then": "draw_panel_16",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_16": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_16",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 16"
+          }
+        }
+      },
+      {
+        "check_panel_16": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_16.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_16"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_16": {
+          "wait": "PT5S",
+          "then": "draw_panel_17",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_17": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_17",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 17"
+          }
+        }
+      },
+      {
+        "check_panel_17": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_17.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_17"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_17": {
+          "wait": "PT5S",
+          "then": "draw_panel_18",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_18": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_18",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 18"
+          }
+        }
+      },
+      {
+        "check_panel_18": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_18.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_18"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_18": {
+          "wait": "PT5S",
+          "then": "draw_panel_19",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_19": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_19",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 19"
+          }
+        }
+      },
+      {
+        "check_panel_19": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_19.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_19"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_19": {
+          "wait": "PT5S",
+          "then": "draw_panel_20",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_20": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_20",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 20"
+          }
+        }
+      },
+      {
+        "check_panel_20": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_20.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_20"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_20": {
+          "wait": "PT5S",
+          "then": "draw_panel_21",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_21": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_21",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 21"
+          }
+        }
+      },
+      {
+        "check_panel_21": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_21.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_21"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_21": {
+          "wait": "PT5S",
+          "then": "draw_panel_22",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_22": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_22",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 22"
+          }
+        }
+      },
+      {
+        "check_panel_22": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_22.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_22"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_22": {
+          "wait": "PT5S",
+          "then": "draw_panel_23",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_23": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_23",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 23"
+          }
+        }
+      },
+      {
+        "check_panel_23": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_23.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_23"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_23": {
+          "wait": "PT5S",
+          "then": "draw_panel_24",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_24": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_24",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 24"
+          }
+        }
+      },
+      {
+        "check_panel_24": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_24.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_24"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_24": {
+          "wait": "PT5S",
+          "then": "draw_panel_25",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_25": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_25",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 25"
+          }
+        }
+      },
+      {
+        "check_panel_25": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_25.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_25"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_25": {
+          "wait": "PT5S",
+          "then": "draw_panel_26",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_26": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_26",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 26"
+          }
+        }
+      },
+      {
+        "check_panel_26": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_26.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_26"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_26": {
+          "wait": "PT5S",
+          "then": "draw_panel_27",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_27": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_27",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 27"
+          }
+        }
+      },
+      {
+        "check_panel_27": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_27.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_27"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_27": {
+          "wait": "PT5S",
+          "then": "draw_panel_28",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_28": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_28",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 28"
+          }
+        }
+      },
+      {
+        "check_panel_28": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_28.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_28"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_28": {
+          "wait": "PT5S",
+          "then": "draw_panel_29",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_29": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_29",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 29"
+          }
+        }
+      },
+      {
+        "check_panel_29": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_29.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_29"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_29": {
+          "wait": "PT5S",
+          "then": "draw_panel_30",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_30": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_30",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 30"
+          }
+        }
+      },
+      {
+        "check_panel_30": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_30.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_30"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_30": {
+          "wait": "PT5S",
+          "then": "draw_panel_31",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_31": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_31",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 31"
+          }
+        }
+      },
+      {
+        "check_panel_31": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_31.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_31"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_31": {
+          "wait": "PT5S",
+          "then": "draw_panel_32",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_32": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_32",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 32"
+          }
+        }
+      },
+      {
+        "check_panel_32": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_32.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_32"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_32": {
+          "wait": "PT5S",
+          "then": "draw_panel_33",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_33": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_33",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 33"
+          }
+        }
+      },
+      {
+        "check_panel_33": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_33.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_33"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_33": {
+          "wait": "PT5S",
+          "then": "draw_panel_34",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_34": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_34",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 34"
+          }
+        }
+      },
+      {
+        "check_panel_34": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_34.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_34"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_34": {
+          "wait": "PT5S",
+          "then": "draw_panel_35",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_35": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_35",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 35"
+          }
+        }
+      },
+      {
+        "check_panel_35": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_35.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_35"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_35": {
+          "wait": "PT5S",
+          "then": "draw_panel_36",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_36": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_36",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 36"
+          }
+        }
+      },
+      {
+        "check_panel_36": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_36.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_36"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_36": {
+          "wait": "PT5S",
+          "then": "draw_panel_37",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_37": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_37",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 37"
+          }
+        }
+      },
+      {
+        "check_panel_37": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_37.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_37"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_37": {
+          "wait": "PT5S",
+          "then": "draw_panel_38",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_38": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_38",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 38"
+          }
+        }
+      },
+      {
+        "check_panel_38": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_38.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_38"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_38": {
+          "wait": "PT5S",
+          "then": "draw_panel_39",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_39": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_39",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 39"
+          }
+        }
+      },
+      {
+        "check_panel_39": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_39.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_39"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_39": {
+          "wait": "PT5S",
+          "then": "draw_panel_40",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_40": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_40",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 40"
+          }
+        }
+      },
+      {
+        "check_panel_40": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_40.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_40"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_40": {
+          "wait": "PT5S",
+          "then": "draw_panel_41",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_41": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_41",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 41"
+          }
+        }
+      },
+      {
+        "check_panel_41": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_41.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_41"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_41": {
+          "wait": "PT5S",
+          "then": "draw_panel_42",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_42": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_42",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 42"
+          }
+        }
+      },
+      {
+        "check_panel_42": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_42.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_42"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_42": {
+          "wait": "PT5S",
+          "then": "draw_panel_43",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_43": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_43",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 43"
+          }
+        }
+      },
+      {
+        "check_panel_43": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_43.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_43"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_43": {
+          "wait": "PT5S",
+          "then": "draw_panel_44",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_44": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_44",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 44"
+          }
+        }
+      },
+      {
+        "check_panel_44": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_44.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_44"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_44": {
+          "wait": "PT5S",
+          "then": "draw_panel_45",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_45": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_45",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 45"
+          }
+        }
+      },
+      {
+        "check_panel_45": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_45.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_45"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_45": {
+          "wait": "PT5S",
+          "then": "draw_panel_46",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_46": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_46",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 46"
+          }
+        }
+      },
+      {
+        "check_panel_46": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_46.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_46"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_46": {
+          "wait": "PT5S",
+          "then": "draw_panel_47",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_47": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_47",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 47"
+          }
+        }
+      },
+      {
+        "check_panel_47": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_47.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_47"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_47": {
+          "wait": "PT5S",
+          "then": "draw_panel_48",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_48": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_48",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 48"
+          }
+        }
+      },
+      {
+        "check_panel_48": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_48.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_48"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_48": {
+          "wait": "PT5S",
+          "then": "draw_panel_49",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_49": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_49",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 49"
+          }
+        }
+      },
+      {
+        "check_panel_49": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_49.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_49"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_49": {
+          "wait": "PT5S",
+          "then": "draw_panel_50",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_50": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_50",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 50"
+          }
+        }
+      },
+      {
+        "check_panel_50": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_50.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_50"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_50": {
+          "wait": "PT5S",
+          "then": "draw_panel_51",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_51": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_51",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 51"
+          }
+        }
+      },
+      {
+        "check_panel_51": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_51.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_51"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_51": {
+          "wait": "PT5S",
+          "then": "draw_panel_52",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_52": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_52",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 52"
+          }
+        }
+      },
+      {
+        "check_panel_52": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_52.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_52"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_52": {
+          "wait": "PT5S",
+          "then": "draw_panel_53",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_53": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_53",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 53"
+          }
+        }
+      },
+      {
+        "check_panel_53": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_53.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_53"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_53": {
+          "wait": "PT5S",
+          "then": "draw_panel_54",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_54": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_54",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 54"
+          }
+        }
+      },
+      {
+        "check_panel_54": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_54.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_54"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_54": {
+          "wait": "PT5S",
+          "then": "draw_panel_55",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_55": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_55",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 55"
+          }
+        }
+      },
+      {
+        "check_panel_55": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_55.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_55"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_55": {
+          "wait": "PT5S",
+          "then": "draw_panel_56",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_56": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_56",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 56"
+          }
+        }
+      },
+      {
+        "check_panel_56": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_56.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_56"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_56": {
+          "wait": "PT5S",
+          "then": "draw_panel_57",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_57": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_57",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 57"
+          }
+        }
+      },
+      {
+        "check_panel_57": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_57.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_57"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_57": {
+          "wait": "PT5S",
+          "then": "draw_panel_58",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_58": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_58",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 58"
+          }
+        }
+      },
+      {
+        "check_panel_58": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_58.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_58"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_58": {
+          "wait": "PT5S",
+          "then": "draw_panel_59",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_59": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_59",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 59"
+          }
+        }
+      },
+      {
+        "check_panel_59": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_59.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_59"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_59": {
+          "wait": "PT5S",
+          "then": "draw_panel_60",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_60": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_60",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 60"
+          }
+        }
+      },
+      {
+        "check_panel_60": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_60.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_60"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_60": {
+          "wait": "PT5S",
+          "then": "draw_panel_61",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_61": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_61",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 61"
+          }
+        }
+      },
+      {
+        "check_panel_61": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_61.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_61"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_61": {
+          "wait": "PT5S",
+          "then": "draw_panel_62",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_62": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_62",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 62"
+          }
+        }
+      },
+      {
+        "check_panel_62": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_62.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_62"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_62": {
+          "wait": "PT5S",
+          "then": "draw_panel_63",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_63": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_63",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 63"
+          }
+        }
+      },
+      {
+        "check_panel_63": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_63.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_63"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_63": {
+          "wait": "PT5S",
+          "then": "draw_panel_64",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_64": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_64",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 64"
+          }
+        }
+      },
+      {
+        "check_panel_64": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_64.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_64"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_64": {
+          "wait": "PT5S",
+          "then": "draw_panel_65",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_65": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_65",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 65"
+          }
+        }
+      },
+      {
+        "check_panel_65": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_65.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_65"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_65": {
+          "wait": "PT5S",
+          "then": "draw_panel_66",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_66": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_66",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 66"
+          }
+        }
+      },
+      {
+        "check_panel_66": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_66.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_66"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_66": {
+          "wait": "PT5S",
+          "then": "draw_panel_67",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_67": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_67",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 67"
+          }
+        }
+      },
+      {
+        "check_panel_67": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_67.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_67"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_67": {
+          "wait": "PT5S",
+          "then": "draw_panel_68",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_68": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_68",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 68"
+          }
+        }
+      },
+      {
+        "check_panel_68": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_68.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_68"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_68": {
+          "wait": "PT5S",
+          "then": "draw_panel_69",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_69": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_69",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 69"
+          }
+        }
+      },
+      {
+        "check_panel_69": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_69.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_69"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_69": {
+          "wait": "PT5S",
+          "then": "draw_panel_70",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_70": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_70",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 70"
+          }
+        }
+      },
+      {
+        "check_panel_70": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_70.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_70"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_70": {
+          "wait": "PT5S",
+          "then": "draw_panel_71",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_71": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_71",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 71"
+          }
+        }
+      },
+      {
+        "check_panel_71": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_71.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_71"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_71": {
+          "wait": "PT5S",
+          "then": "draw_panel_72",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_72": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_72",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 72"
+          }
+        }
+      },
+      {
+        "check_panel_72": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_72.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_72"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_72": {
+          "wait": "PT5S",
+          "then": "draw_panel_73",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_73": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_73",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 73"
+          }
+        }
+      },
+      {
+        "check_panel_73": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_73.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_73"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_73": {
+          "wait": "PT5S",
+          "then": "draw_panel_74",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_74": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_74",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 74"
+          }
+        }
+      },
+      {
+        "check_panel_74": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_74.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_74"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_74": {
+          "wait": "PT5S",
+          "then": "draw_panel_75",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_75": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_75",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 75"
+          }
+        }
+      },
+      {
+        "check_panel_75": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_75.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_75"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_75": {
+          "wait": "PT5S",
+          "then": "draw_panel_76",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_76": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_76",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 76"
+          }
+        }
+      },
+      {
+        "check_panel_76": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_76.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_76"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_76": {
+          "wait": "PT5S",
+          "then": "draw_panel_77",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_77": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_77",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 77"
+          }
+        }
+      },
+      {
+        "check_panel_77": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_77.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_77"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_77": {
+          "wait": "PT5S",
+          "then": "draw_panel_78",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_78": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_78",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 78"
+          }
+        }
+      },
+      {
+        "check_panel_78": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_78.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_78"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_78": {
+          "wait": "PT5S",
+          "then": "draw_panel_79",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_79": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "check_panel_79",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 79"
+          }
+        }
+      },
+      {
+        "check_panel_79": {
+          "switch": [
+            {
+              "when": "${ .draw_panel_79.done == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_panel_79"
+            }
+          ],
+          "x-base44": {
+            "title": "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435"
+          }
+        }
+      },
+      {
+        "wait_panel_79": {
+          "wait": "PT5S",
+          "then": "draw_panel_80",
+          "x-base44": {
+            "title": "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043a\u0430\u0434\u0440"
+          }
+        }
+      },
+      {
+        "draw_panel_80": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/task",
+            "method": "POST",
+            "body": {
+              "task_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "\u041d\u0430\u0440\u0438\u0441\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043a\u0430\u0434\u0440 80"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "Восстановление очереди",
+  "description": "Возобновляет только зависшие пользовательские задания в пределах сохранённого лимита рисунков",
+  "trigger": {
+    "config": {
+      "trigger_type": "scheduled",
+      "schedule_mode": "recurring",
+      "cron_expression": "*/5 * * * *",
+      "timezone": "UTC",
+      "events": []
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "recover_render_queue",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "recover": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/render/recover",
+            "method": "POST",
+            "body": {}
+          },
+          "then": "end"
+        }
+      }
+    ]
+  }
+}

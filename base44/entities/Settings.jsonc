@@ -1,0 +1,159 @@
+{
+  "name": "Settings",
+  "type": "object",
+  "properties": {
+    "instagram_handle": {
+      "type": "string",
+      "description": "\u0412\u0430\u0448 \u043d\u0438\u043a \u0432 Instagram \u0431\u0435\u0437 @"
+    },
+    "codeword": {
+      "type": "string",
+      "description": "\u041a\u043e\u0434\u043e\u0432\u043e\u0435 \u0441\u043b\u043e\u0432\u043e \u0434\u043b\u044f \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0435\u0432"
+    },
+    "gift": {
+      "type": "string",
+      "description": "\u041f\u043e\u0434\u0430\u0440\u043e\u043a \u0437\u0430 \u043a\u043e\u0434\u043e\u0432\u043e\u0435 \u0441\u043b\u043e\u0432\u043e"
+    },
+    "blog_topic": {
+      "type": "string",
+      "description": "\u0422\u0435\u043c\u0430 \u0431\u043b\u043e\u0433\u0430 \u0434\u043b\u044f \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0435\u0432"
+    },
+    "text_mode": {
+      "type": "string",
+      "enum": [
+        "close",
+        "own"
+      ],
+      "default": "close"
+    },
+    "digest_day": {
+      "type": "number",
+      "default": 1
+    },
+    "digest_hour": {
+      "type": "number",
+      "default": 9
+    },
+    "timezone": {
+      "type": "string",
+      "default": "Europe/Moscow"
+    },
+    "scout_limit": {
+      "type": "number",
+      "default": 40
+    },
+    "cta_memory": {
+      "type": "object",
+      "description": "\u041f\u0430\u043c\u044f\u0442\u044c \u043f\u0440\u0438\u0437\u044b\u0432\u043e\u0432 \u043f\u043e \u044f\u0437\u044b\u043a\u0430\u043c \u043f\u0443\u0431\u043b\u0438\u043a\u0430\u0446\u0438\u0438: ru/es/en \u2192 {cta, codeword}. \u041f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0451\u043d\u043d\u044b\u0439 \u043f\u0440\u0438\u0437\u044b\u0432 \u043f\u043e\u0434\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u0442\u0441\u044f \u0432 \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0443\u044e \u043a\u0430\u0440\u0443\u0441\u0435\u043b\u044c \u044d\u0442\u043e\u0433\u043e \u044f\u0437\u044b\u043a\u0430."
+    },
+    "buffer_channel_id": {
+      "type": "string",
+      "description": "\u0412\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u0439 \u043a\u0430\u043d\u0430\u043b Buffer \u0434\u043b\u044f \u0430\u0432\u0442\u043e\u043f\u0443\u0431\u043b\u0438\u043a\u0430\u0446\u0438\u0438 (Instagram \u0438 \u0434\u0440\u0443\u0433\u0438\u0435 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0438)"
+    },
+    "scout_history": {
+      "type": "array",
+      "description": "\u0418\u0441\u0442\u043e\u0440\u0438\u044f \u0440\u0430\u0437\u0432\u0435\u0434\u043a\u0438: \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u0438\u0435 10 \u043d\u0438\u043a\u043e\u0432, \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u0438\u0441\u043a\u0430\u043b\u0438 \u0438\u043b\u0438 \u043e\u0441\u0442\u0430\u0432\u0438\u043b\u0438",
+      "items": {
+        "type": "string"
+      }
+    },
+    "watch_run_id": {
+      "type": "string"
+    },
+    "watch_start_token": {
+      "type": "string"
+    },
+    "watch_start_until": {
+      "type": "string"
+    },
+    "digest_last_slot": {
+      "type": "string"
+    },
+    "max_image_requests_per_carousel": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 200
+    },
+    "image_model": {
+      "type": "string",
+      "enum": [
+        "automatic",
+        "nano_banana_2_1",
+        "gpt_image_2"
+      ],
+      "description": "\u0412\u044b\u0431\u0440\u0430\u043d\u043d\u0430\u044f \u043c\u043e\u0434\u0435\u043b\u044c \u0434\u043b\u044f \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0445 \u0440\u0438\u0441\u0443\u043d\u043a\u043e\u0432; \u043e\u0447\u0435\u0440\u0435\u0434\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u044f\u0435\u0442 \u0441\u043e\u0431\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 \u0441\u043d\u0438\u043c\u043e\u043a \u0432\u044b\u0431\u043e\u0440\u0430.",
+      "default": "automatic"
+    },
+    "editorial": {
+      "type": "object"
+    },
+    "editorial_revision": {
+      "type": "number"
+    },
+    "editorial_tick_token": {
+      "type": "string"
+    },
+    "editorial_tick_until": {
+      "type": "string"
+    },
+    "editorial_collect_token": {
+      "type": "string"
+    },
+    "editorial_collect_until": {
+      "type": "string"
+    },
+    "editorial_report_day": {
+      "type": "string"
+    },
+    "usage_day": {
+      "type": "string"
+    },
+    "usage_week": {
+      "type": "string"
+    },
+    "usage_image_day": {
+      "type": "number"
+    },
+    "usage_image_week": {
+      "type": "number"
+    },
+    "usage_text_day": {
+      "type": "number"
+    },
+    "usage_text_week": {
+      "type": "number"
+    },
+    "usage_scout_day": {
+      "type": "number"
+    },
+    "usage_scout_week": {
+      "type": "number"
+    },
+    "editorial_control_version": {
+      "type": "number"
+    }
+  },
+  "required": [],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

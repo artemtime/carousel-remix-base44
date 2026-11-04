@@ -1,0 +1,66 @@
+{
+  "name": "ReelTranscript",
+  "type": "object",
+  "properties": {
+    "source_url": {
+      "type": "string"
+    },
+    "handle": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "transcript",
+        "hit"
+      ],
+      "default": "transcript"
+    },
+    "transcript": {
+      "type": "string"
+    },
+    "lines": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "summary": {
+      "type": "string"
+    },
+    "hook": {
+      "type": "string"
+    },
+    "why_viral": {
+      "type": "string"
+    },
+    "scenario": {
+      "type": "object"
+    }
+  },
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
