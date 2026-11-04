@@ -1,0 +1,75 @@
+{
+  "name": "Hero",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string",
+      "description": "Внешность без слов про одежду: вид, пропорции, цвета, лицо"
+    },
+    "default_outfit": {
+      "type": "string"
+    },
+    "signature_details": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "never_change": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sheet_url": {
+      "type": "string",
+      "description": "Лист героя: три позы, один и тот же персонаж"
+    },
+    "art_style": {
+      "type": "string"
+    },
+    "identity_reference_url": {
+      "type": "string"
+    },
+    "identity_source_url": {
+      "type": "string"
+    },
+    "identity_status": {
+      "type": "string"
+    },
+    "identity_updated_at": {
+      "type": "string"
+    },
+    "identity_bounds": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

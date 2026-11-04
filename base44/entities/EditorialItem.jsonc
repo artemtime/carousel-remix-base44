@@ -1,0 +1,113 @@
+{
+  "name": "EditorialItem",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_handle": {
+      "type": "string"
+    },
+    "source_url": {
+      "type": "string"
+    },
+    "carousel_id": {
+      "type": "string"
+    },
+    "week_key": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "idea",
+        "approved",
+        "planning",
+        "planned",
+        "rendering",
+        "checking",
+        "repair",
+        "review",
+        "ready",
+        "scheduled",
+        "queued",
+        "published",
+        "deferred",
+        "skipped",
+        "error"
+      ]
+    },
+    "config_snapshot": {
+      "type": "object"
+    },
+    "policy_revision": {
+      "type": "number"
+    },
+    "due_at": {
+      "type": "string"
+    },
+    "deferred_until": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "error": {
+      "type": "string"
+    },
+    "lease_token": {
+      "type": "string"
+    },
+    "lease_until": {
+      "type": "string"
+    },
+    "decision_token": {
+      "type": "string"
+    },
+    "approved_idea_at": {
+      "type": "string"
+    },
+    "production_requested": {
+      "type": "boolean"
+    },
+    "final_cursor": {
+      "type": "number"
+    },
+    "auto_repair_attempted": {
+      "type": "boolean"
+    },
+    "deferred_status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "source_id",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

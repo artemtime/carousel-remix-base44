@@ -1,0 +1,64 @@
+{
+  "name": "ScoutCache",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "description": "Ключ записи: handle:ник для разведки автора или post:код для одного поста"
+    },
+    "handle": {
+      "type": "string"
+    },
+    "baseline": {
+      "type": "number"
+    },
+    "total": {
+      "type": "number"
+    },
+    "hits": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "hits_reels": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "post": {
+      "type": "object",
+      "description": "Сохранённый пост по прямой ссылке"
+    },
+    "fetched_at": {
+      "type": "string",
+      "description": "Когда данные получены: свежие отдаются из базы без нового запроса"
+    }
+  },
+  "required": [
+    "key"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

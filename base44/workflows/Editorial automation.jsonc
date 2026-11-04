@@ -1,0 +1,625 @@
+{
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "*/5 * * * *",
+      "one_time_date": null,
+      "timezone": "UTC",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "description": "Bounded editorial work and publication reconciliation. No paid work until configured.",
+  "name": "Editorial automation",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "editorial_automation",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "tick_01": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_01"
+        }
+      },
+      {
+        "check_01": {
+          "switch": [
+            {
+              "when": "${ .tick_01.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_01"
+            }
+          ]
+        }
+      },
+      {
+        "wait_01": {
+          "wait": "PT5S",
+          "then": "tick_02"
+        }
+      },
+      {
+        "tick_02": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_02"
+        }
+      },
+      {
+        "check_02": {
+          "switch": [
+            {
+              "when": "${ .tick_02.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_02"
+            }
+          ]
+        }
+      },
+      {
+        "wait_02": {
+          "wait": "PT5S",
+          "then": "tick_03"
+        }
+      },
+      {
+        "tick_03": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_03"
+        }
+      },
+      {
+        "check_03": {
+          "switch": [
+            {
+              "when": "${ .tick_03.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_03"
+            }
+          ]
+        }
+      },
+      {
+        "wait_03": {
+          "wait": "PT5S",
+          "then": "tick_04"
+        }
+      },
+      {
+        "tick_04": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_04"
+        }
+      },
+      {
+        "check_04": {
+          "switch": [
+            {
+              "when": "${ .tick_04.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_04"
+            }
+          ]
+        }
+      },
+      {
+        "wait_04": {
+          "wait": "PT5S",
+          "then": "tick_05"
+        }
+      },
+      {
+        "tick_05": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_05"
+        }
+      },
+      {
+        "check_05": {
+          "switch": [
+            {
+              "when": "${ .tick_05.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_05"
+            }
+          ]
+        }
+      },
+      {
+        "wait_05": {
+          "wait": "PT5S",
+          "then": "tick_06"
+        }
+      },
+      {
+        "tick_06": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_06"
+        }
+      },
+      {
+        "check_06": {
+          "switch": [
+            {
+              "when": "${ .tick_06.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_06"
+            }
+          ]
+        }
+      },
+      {
+        "wait_06": {
+          "wait": "PT5S",
+          "then": "tick_07"
+        }
+      },
+      {
+        "tick_07": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_07"
+        }
+      },
+      {
+        "check_07": {
+          "switch": [
+            {
+              "when": "${ .tick_07.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_07"
+            }
+          ]
+        }
+      },
+      {
+        "wait_07": {
+          "wait": "PT5S",
+          "then": "tick_08"
+        }
+      },
+      {
+        "tick_08": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_08"
+        }
+      },
+      {
+        "check_08": {
+          "switch": [
+            {
+              "when": "${ .tick_08.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_08"
+            }
+          ]
+        }
+      },
+      {
+        "wait_08": {
+          "wait": "PT5S",
+          "then": "tick_09"
+        }
+      },
+      {
+        "tick_09": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_09"
+        }
+      },
+      {
+        "check_09": {
+          "switch": [
+            {
+              "when": "${ .tick_09.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_09"
+            }
+          ]
+        }
+      },
+      {
+        "wait_09": {
+          "wait": "PT5S",
+          "then": "tick_10"
+        }
+      },
+      {
+        "tick_10": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_10"
+        }
+      },
+      {
+        "check_10": {
+          "switch": [
+            {
+              "when": "${ .tick_10.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_10"
+            }
+          ]
+        }
+      },
+      {
+        "wait_10": {
+          "wait": "PT5S",
+          "then": "tick_11"
+        }
+      },
+      {
+        "tick_11": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_11"
+        }
+      },
+      {
+        "check_11": {
+          "switch": [
+            {
+              "when": "${ .tick_11.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_11"
+            }
+          ]
+        }
+      },
+      {
+        "wait_11": {
+          "wait": "PT5S",
+          "then": "tick_12"
+        }
+      },
+      {
+        "tick_12": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_12"
+        }
+      },
+      {
+        "check_12": {
+          "switch": [
+            {
+              "when": "${ .tick_12.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_12"
+            }
+          ]
+        }
+      },
+      {
+        "wait_12": {
+          "wait": "PT5S",
+          "then": "tick_13"
+        }
+      },
+      {
+        "tick_13": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_13"
+        }
+      },
+      {
+        "check_13": {
+          "switch": [
+            {
+              "when": "${ .tick_13.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_13"
+            }
+          ]
+        }
+      },
+      {
+        "wait_13": {
+          "wait": "PT5S",
+          "then": "tick_14"
+        }
+      },
+      {
+        "tick_14": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_14"
+        }
+      },
+      {
+        "check_14": {
+          "switch": [
+            {
+              "when": "${ .tick_14.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_14"
+            }
+          ]
+        }
+      },
+      {
+        "wait_14": {
+          "wait": "PT5S",
+          "then": "tick_15"
+        }
+      },
+      {
+        "tick_15": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_15"
+        }
+      },
+      {
+        "check_15": {
+          "switch": [
+            {
+              "when": "${ .tick_15.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_15"
+            }
+          ]
+        }
+      },
+      {
+        "wait_15": {
+          "wait": "PT5S",
+          "then": "tick_16"
+        }
+      },
+      {
+        "tick_16": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_16"
+        }
+      },
+      {
+        "check_16": {
+          "switch": [
+            {
+              "when": "${ .tick_16.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_16"
+            }
+          ]
+        }
+      },
+      {
+        "wait_16": {
+          "wait": "PT5S",
+          "then": "tick_17"
+        }
+      },
+      {
+        "tick_17": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_17"
+        }
+      },
+      {
+        "check_17": {
+          "switch": [
+            {
+              "when": "${ .tick_17.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_17"
+            }
+          ]
+        }
+      },
+      {
+        "wait_17": {
+          "wait": "PT5S",
+          "then": "tick_18"
+        }
+      },
+      {
+        "tick_18": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_18"
+        }
+      },
+      {
+        "check_18": {
+          "switch": [
+            {
+              "when": "${ .tick_18.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_18"
+            }
+          ]
+        }
+      },
+      {
+        "wait_18": {
+          "wait": "PT5S",
+          "then": "tick_19"
+        }
+      },
+      {
+        "tick_19": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_19"
+        }
+      },
+      {
+        "check_19": {
+          "switch": [
+            {
+              "when": "${ .tick_19.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "wait_19"
+            }
+          ]
+        }
+      },
+      {
+        "wait_19": {
+          "wait": "PT5S",
+          "then": "tick_20"
+        }
+      },
+      {
+        "tick_20": {
+          "call": "invoke_server_route",
+          "with": {
+            "path": "/api/editorial/tick",
+            "method": "POST"
+          },
+          "then": "check_20"
+        }
+      },
+      {
+        "check_20": {
+          "switch": [
+            {
+              "when": "${ .tick_20.more != true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "end"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

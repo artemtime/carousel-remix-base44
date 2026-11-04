@@ -1,0 +1,98 @@
+{
+  "name": "TaskQueue",
+  "type": "object",
+  "properties": {
+    "kind": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "running",
+        "done",
+        "failed",
+        "paused",
+        "review"
+      ],
+      "default": "queued"
+    },
+    "carousel_id": {
+      "type": "string"
+    },
+    "result": {
+      "type": "string"
+    },
+    "error": {
+      "type": "string"
+    },
+    "owner_id": {
+      "type": "string"
+    },
+    "lease_until": {
+      "type": "string"
+    },
+    "lease_id": {
+      "type": "string"
+    },
+    "cursor": {
+      "type": "number",
+      "default": 0
+    },
+    "completed": {
+      "type": "number",
+      "default": 0
+    },
+    "total": {
+      "type": "number",
+      "default": 0
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "stop_requested": {
+      "type": "boolean",
+      "default": false
+    },
+    "visual_key": {
+      "type": "string"
+    },
+    "image_model": {
+      "type": "string",
+      "enum": [
+        "automatic",
+        "nano_banana_2_1",
+        "gpt_image_2"
+      ],
+      "description": "\u0412\u044b\u0431\u0440\u0430\u043d\u043d\u0430\u044f \u043c\u043e\u0434\u0435\u043b\u044c \u0434\u043b\u044f \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0445 \u0440\u0438\u0441\u0443\u043d\u043a\u043e\u0432; \u043e\u0447\u0435\u0440\u0435\u0434\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u044f\u0435\u0442 \u0441\u043e\u0431\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 \u0441\u043d\u0438\u043c\u043e\u043a \u0432\u044b\u0431\u043e\u0440\u0430."
+    }
+  },
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

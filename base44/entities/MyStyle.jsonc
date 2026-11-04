@@ -1,0 +1,99 @@
+{
+  "name": "MyStyle",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "author_handle": {
+      "type": "string"
+    },
+    "aspect": {
+      "type": "string",
+      "default": "4:5"
+    },
+    "art_style": {
+      "type": "string"
+    },
+    "caption": {
+      "type": "object",
+      "description": "Подпись по умолчанию: как лежит текст, шрифт, цвет, размер"
+    },
+    "typography": {
+      "type": "object",
+      "description": "Отдельная типографика для ролей слайда: hook, body, cta. Пустые роли берут подпись по умолчанию"
+    },
+    "hero": {
+      "type": "object"
+    },
+    "hero_id": {
+      "type": "string",
+      "description": "Герой из библиотеки, если выбран оттуда"
+    },
+    "hero_sheet_url": {
+      "type": "string"
+    },
+    "hero_variants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "world": {
+      "type": "string"
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "font_kind": {
+      "type": "string"
+    },
+    "source_slide_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "palette": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Основные цвета иллюстраций #RRGGBB"
+    },
+    "lighting": {
+      "type": "string"
+    },
+    "background": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

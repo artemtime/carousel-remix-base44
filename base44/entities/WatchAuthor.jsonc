@@ -1,0 +1,56 @@
+{
+  "name": "WatchAuthor",
+  "type": "object",
+  "properties": {
+    "handle": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "paused"
+      ],
+      "default": "active"
+    },
+    "with_reels": {
+      "type": "boolean",
+      "default": false
+    },
+    "fail_count": {
+      "type": "number",
+      "default": 0
+    },
+    "last_checked": {
+      "type": "string"
+    },
+    "last_note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "handle"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

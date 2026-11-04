@@ -1,0 +1,80 @@
+{
+  "name": "Feedback",
+  "type": "object",
+  "properties": {
+    "kind": {
+      "type": "string",
+      "enum": [
+        "bug",
+        "idea",
+        "other"
+      ],
+      "default": "bug",
+      "description": "Что случилось: сломалось, идея улучшения или другое"
+    },
+    "message": {
+      "type": "string",
+      "description": "Что человек написал своими словами"
+    },
+    "page": {
+      "type": "string",
+      "description": "Страница приложения, где нажали кнопку отчёта"
+    },
+    "device": {
+      "type": "string",
+      "description": "Устройство и ширина экрана на момент отчёта"
+    },
+    "image_uri": {
+      "type": "string",
+      "description": "Приложенный скриншот в приватном хранилище"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "in_progress",
+        "fixed",
+        "declined"
+      ],
+      "default": "new"
+    },
+    "admin_note": {
+      "type": "string",
+      "description": "Ответ автора приложения: что сделано или почему нет"
+    },
+    "resolved_at": {
+      "type": "string"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "user_name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "message"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

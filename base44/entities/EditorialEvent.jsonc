@@ -1,0 +1,50 @@
+{
+  "name": "EditorialEvent",
+  "type": "object",
+  "properties": {
+    "kind": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "carousel_id": {
+      "type": "string"
+    },
+    "item_id": {
+      "type": "string"
+    },
+    "read": {
+      "type": "boolean"
+    },
+    "day_key": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "kind",
+    "message"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
