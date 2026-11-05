@@ -60,7 +60,7 @@ test('direct image-generation endpoint rejects text cards before any model is ca
 });
 test('mirror text plan does not call a story model; own story uses text only',async()=>{
  const module=await read('text-cards.server.js');let calls=0;
- const {planTextCarousel}=load(module,['planTextCarousel'],{textSlides,textStyle,readReference:async()=>source,askJson:async options=>{calls++;assert.equal(options.fileUrls,undefined);return {title:'Новая',caption:'Подпись',cards:[{index:1,text:'Своя мысль'},{index:2,text:'Свой вывод'}]};}});
+ const {planTextCarousel}=load(module,['planTextCarousel'],{textCard,textSlides,textStyle,readReference:async()=>source,askJson:async options=>{calls++;assert.equal(options.fileUrls,undefined);return {title:'Новая',caption:'Подпись',cards:[{index:1,text:'Своя мысль'},{index:2,text:'Свой вывод'}]};}});
  const hooks={localize:async p=>p,finish:p=>p};
  const mirrored=await planTextCarousel({}, {mode:'mirror',reference:source},hooks);assert.equal(calls,0);assert.equal(mirrored.slides[0].text,'Текст 1');
  const own=await planTextCarousel({}, {mode:'original',reference:source,style:TEXT_STYLE},hooks);assert.equal(calls,1);assert.equal(own.slides[0].reference_card.visual_mode,'text');
@@ -82,4 +82,12 @@ test('restyling removes previous final PNGs and checks before showing new cards'
  const db={entities:{Slide:{filter:async()=>({items:[{id:'old',final_image_url:'old.png'}]}),bulkUpdate:async rows=>{updates=rows;},bulkCreate:async()=>{},delete:async()=>{}}}};
  await replaceCarouselSlides(db,'carousel',{slides:[{text:'Новый текст',reference_card:textCard('Новый текст')}]});
  assert.equal(updates[0].final_image_url,'');assert.equal(updates[0].final_render_key,'');assert.equal(updates[0].final_check_status,'pending');assert.equal(updates[0].final_renderer,'server-text-v1');
+});
+
+test('text from a reel or series brief plans seven cards without image reading',async()=>{
+ const module=await read('text-cards.server.js');let asked=0;
+ const {planTextCarousel}=load(module,['planTextCarousel'],{textCard,textSlides,textStyle,readReference:async()=>{throw Error('no images to read');},askJson:async()=>{asked++;return {title:'Из рассказа',caption:'Подпись',cards:Array.from({length:7},(_,i)=>({index:i+1,text:'Мысль '+(i+1)}))};}});
+ const result=await planTextCarousel({}, {mode:'original',style:TEXT_STYLE,sourceText:'Достаточно длинный исходный рассказ без картинок'}, {localize:async p=>p,finish:p=>p});
+ assert.equal(asked,1);assert.equal(result.slides.length,7);assert.ok(result.slides.every(s=>s.reference_card.visual_mode==='text' && s.reference_card.panels.length===0));
+ await assert.rejects(()=>planTextCarousel({}, {mode:'mirror',sourceText:'Исходный рассказ'}, {}),/нужны изображения/);
 });

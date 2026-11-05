@@ -769,7 +769,7 @@ export async function createCarouselFromPlan(base44, { plan, style, source, mode
     status: "plan",
     caption: plan.caption || "",
     slides_count: (plan.slides || []).length,
-    reference_images: plan.reference_profile ? plan.reference_profile.cards.map((card) => card.reference_url) : [],
+    reference_images: plan.reference_profile ? plan.reference_profile.cards.map((card) => card.reference_url).filter(Boolean) : [],
     reference_profile: plan.reference_profile || {},
   });
   await base44.entities.Slide.bulkCreate(
