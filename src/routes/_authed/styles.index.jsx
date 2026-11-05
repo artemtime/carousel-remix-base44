@@ -5,6 +5,7 @@ import { base44 } from "@/api/base44Client";
 import PageHeader from "@/components/PageHeader";
 import EmptyState from "@/components/EmptyState";
 import SlideCanvas from "@/components/SlideCanvas";
+import NewTextStyleButton from "@/components/styles/NewTextStyleButton";
 import NewStyleDialog from "@/components/styles/NewStyleDialog";
 
 export const Route = createFileRoute("/_authed/styles/")({
@@ -33,14 +34,14 @@ function StylesPage() {
       <PageHeader
         eyebrow="библиотека"
         title="Мои стили"
-        description="Один раз сняли вид автора и придумали героя — дальше каждая карусель в этом стиле, со своими правилами и миром."
-        actions={
+        description="Сохраните шрифты, цвета и оформление для следующих каруселей. Для текста герой не нужен; для иллюстраций можно добавить своего персонажа."
+        actions={<div className="flex flex-wrap gap-2"><NewTextStyleButton onCreated={record=>navigate({to:"/styles/$styleId",params:{styleId:record.id}})}/>
           <button
             onClick={() => setOpen(true)}
             className="inline-flex items-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-3.5 py-2 text-[13px] font-medium text-[hsl(var(--primary-foreground))] transition-opacity hover:opacity-90"
           >
             <Plus className="h-4 w-4" /> Новый стиль
-          </button>
+          </button></div>
         }
       />
 

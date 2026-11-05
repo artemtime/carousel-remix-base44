@@ -2,7 +2,7 @@ import opentype from "opentype.js";
 import { resolveFont } from "@/lib/fonts";
 import { normalizeProfile } from "@/lib/slide-renderer";
 import { fetchTrustedImage } from "@/lib/trusted-images.server";
-import {decodeArtwork,paintOwnCard} from "@/lib/server-card-paint";
+import {decodeArtwork,paintOwnCard,paintTextCard} from "@/lib/server-card-paint";
 const fonts = new Map();
 async function readBounded(response, limit) {
   if (!response.ok || Number(response.headers.get("content-length")) > limit) throw new Error("Не загрузился шрифт");
@@ -33,6 +33,7 @@ export async function renderServerCard(slide) {
   const chars = [...new Set((text + text.toUpperCase()).replace(/[\u{1F000}-\u{1FAFF}\u2600-\u27BF]/gu, "").replace(/\uFE0F|\u200D|\r|\n/gu, "").split(""))].sort().join("");
   const font = resolveFont(p.font), weights = [...new Set([p.weight, p.bold_weight])], loaded = new Map();
   await Promise.all(weights.map(async weight => loaded.set(weight, await fontFor(font, weight, chars || "АаAa"))));
+  if(card?.visual_mode === "text")return paintTextCard(card,p,weight=>loaded.get(weight));
   const images = [];let totalPixels=0;
   for (const url of [slide.image_url, slide.image_url_2].slice(0, card.panels.length)) {
     const file = await fetchTrustedImage(url, { maxBytes: 10_000_000 });

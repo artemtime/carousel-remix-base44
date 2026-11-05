@@ -63,6 +63,15 @@ export function paintCaption(ctx,text,p,fontForWeight,width,height,id,bitmap) {
     }
   }
 }
+export function paintTextCard(card,profile,fontForWeight) {
+  const [w,h]=card.aspect.split(":").map(Number),W=1080,H=Math.round(W*h/w);
+  if(!(H>=400 && H<=3000))throw new Error("Неверные пропорции текстовой карточки");
+  const target=new Bitmap(W,H),ctx=target.getContext("2d");
+  ctx.fillStyle=safeColor(card.background,"#FAF8F3");ctx.fillRect(0,0,W,H);
+  const text=card.text_blocks.map(b=>b.text).join("\n\n");
+  paintCaption(ctx,text,profile,fontForWeight,W,H,0,target);
+  return encodePng({width:W,height:H,channels:4,depth:8,data:target.data},{zlib:{level:6}});
+}
 export function paintOwnCard(card,images,profile,fontForWeight) {
   if(card?.visual_mode!=="own" || !card.panels?.length || card.panels.length>2)throw new Error("Фоновая сборка доступна для своего стиля");
   const [w,h]=card.aspect.split(":").map(Number),W=1080,H=Math.round(W*h/w);

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Loader2, Wand2, Download, AlertTriangle, CheckCircle2, Columns2, Square } from "lucide-react";
 import SlideCanvas from "@/components/SlideCanvas";
 import CompareView from "@/components/author/CompareView";
+import TextCardFields from "@/components/author/TextCardFields";
 import ReferenceFields from "@/components/author/ReferenceFields";
 import ReferencePreview from "@/components/author/ReferencePreview";
 import PanelChecks from "@/components/author/PanelChecks";
@@ -41,13 +42,13 @@ export default function SlideEditor({ slide, style, drawing, drawingNote, onChan
       </div>
 
       <div className="space-y-3">
-        {heroSlot}
+        {slide.reference_card?.visual_mode !== "text" && heroSlot}
 
         {slide.reference_url && (
           <ReferencePreview url={slide.reference_url} index={slide.reference_index} brief={slide.reference_brief} />
         )}
 
-        {slide.reference_card?.schema_version === 2 ? <ReferenceFields slide={slide} onChange={onChange} /> : <>
+        {slide.reference_card?.visual_mode === "text" ? <TextCardFields slide={slide} onChange={onChange}/> : slide.reference_card?.schema_version === 2 ? <ReferenceFields slide={slide} onChange={onChange} /> : <>
         <div>
           <div className="mb-1.5 flex items-center justify-between">
             <label className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">текст на слайде</label>
@@ -88,14 +89,14 @@ export default function SlideEditor({ slide, style, drawing, drawingNote, onChan
         </div>
         </>}
 
-        <button
+        {slide.reference_card?.visual_mode !== "text" && <button
           onClick={onDraw}
           disabled={drawing}
           className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-3 py-2.5 text-[12.5px] font-medium text-[hsl(var(--primary-foreground))] transition-opacity hover:opacity-90 disabled:opacity-50"
         >
           {drawing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Wand2 className="h-4 w-4" />}
           {drawing && drawingNote ? drawingNote : slide.image_url ? "Перерисовать кадр" : "Нарисовать кадр"}
-        </button>
+        </button>}
 
         {slide.image_url && (
           <a

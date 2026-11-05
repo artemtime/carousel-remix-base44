@@ -12,6 +12,7 @@ import { LANGS, ORIGINAL_LANG, pickLanguage, isTranslated } from "@/lib/language
 import { ctaFor, rememberCta } from "@/lib/cta";
 import { useSettings } from "@/hooks/use-settings";
 import StartCtaFields from "@/components/StartCtaFields";
+import {TEXT_STYLE,textStyle} from "@/lib/text-cards";
 import HeroPicker from "@/components/heroes/HeroPicker";
 import ImageModelPicker from "@/components/ImageModelPicker";
 import { heroPassport } from "@/lib/heroes";
@@ -28,6 +29,7 @@ export default function StartCarouselDialog({ open, onOpenChange, source, initia
   const [loadingStyles, setLoadingStyles] = useState(true);
   // Призыв, который подтвердит пользователь: он запомнится для выбранного языка.
   const [cta, setCta] = useState({ cta: "", codeword: "" });
+  const [format,setFormat]=useState("illustrated");
   const [styleId, setStyleId] = useState("");
   const [pickedHero, setPickedHero] = useState(null);
   const [pickedImageModel, setPickedImageModel] = useState(null);
@@ -52,16 +54,19 @@ export default function StartCarouselDialog({ open, onOpenChange, source, initia
       const items = page.items || [];
       setStyles(items);
       if(settings?.editorial?.hero_id)setPickedHero(await base44.entities.Hero.get(settings.editorial.hero_id).catch(()=>null));
-      setStyleId(previous => items.some(item => item.id === previous) ? previous : items.some(item=>item.id===settings?.editorial?.style_id)?settings.editorial.style_id:items.length === 1 ? items[0].id : "");
+      const initial=items.find(item=>item.id===settings?.editorial?.style_id) || (items.length===1?items[0]:null);
+      if(initial?.content_format === "text")setFormat("text");
+      setStyleId(previous => items.some(item => item.id === previous) ? previous : initial?.id || "");
       setLoadingStyles(false);
     })();
   }, [open,settings?.editorial?.style_id]);
 
-  const style = styles.find((s) => s.id === styleId) || (mode === "mirror" ? { name: "Стиль оригинала" } : null);
+  const textOnly=format === "text";
+  const style = styles.find((s) => s.id === styleId) || (mode === "mirror" ? { name: "Стиль оригинала" } : textOnly ? TEXT_STYLE : null);
   // «Зеркало» повторяет оригинал один-в-один: персонаж, палитра и шрифт чужие,
   // поэтому выбирать своего героя здесь бессмысленно — выбор блокируем.
   const mirror = mode === "mirror";
-  const selectedStyle = pickedHero ? { ...style, hero: heroPassport(pickedHero), hero_id: pickedHero.id, hero_sheet_url: pickedHero.sheet_url || "" } : style;
+  const selectedStyle = textOnly ? textStyle(style) : pickedHero ? { ...style, hero: heroPassport(pickedHero), hero_id: pickedHero.id, hero_sheet_url: pickedHero.sheet_url || "" } : style;
   // «Зеркало» умеет и оставить надписи как в оригинале, и перевести их.
   const language = pickLanguage(pickedLanguage, mirror);
   const langOptions = mirror ? [ORIGINAL_LANG, ...LANGS] : LANGS;
@@ -87,7 +92,7 @@ export default function StartCarouselDialog({ open, onOpenChange, source, initia
       let profile = null;
       if (isCarousel) {
         if (exact) setBusy("scan");
-        profile = await scanFn({ data: { images: cards, caption: source?.caption || "" } });
+        profile = await scanFn({ data: { images: cards, caption: source?.caption || "", format } });
         setScan(profile);
         setBusy("plan");
       }
@@ -95,6 +100,7 @@ export default function StartCarouselDialog({ open, onOpenChange, source, initia
       // 2. План карточка к карточке по чертежу.
       const plan = await makePlanFn({
         data: {
+          format,
           style: selectedStyle,
           hero: selectedStyle.hero,
           rules: style.rules || [],
@@ -109,10 +115,11 @@ export default function StartCarouselDialog({ open, onOpenChange, source, initia
         },
       });
 
-      const carousel = await saveFn({ data: { plan, style: selectedStyle, source, mode, language,
+      const savedStyle=textOnly && !selectedStyle.id ? await base44.entities.MyStyle.create(selectedStyle) : selectedStyle;
+      const carousel = await saveFn({ data: { plan, style: savedStyle, source, mode, language,
         imageModel: pickedImageModel ?? settings?.editorial?.image_model ?? settings?.image_model ?? "automatic" } });
       if (isTranslated(language) && cta.cta.trim()) await save({ cta_memory: memory }).catch(() => null);
-      toast.success(profile && exact ? `Прочитано ${profile.cards_count} карточек: план готов` : "План в вашем стиле готов — проверьте и запускайте рисование");
+      toast.success(textOnly ? "Текстовые карточки готовы — проверьте текст и итоговые PNG" : profile && exact ? `Прочитано ${profile.cards_count} карточек: план готов` : "План в вашем стиле готов — проверьте и запускайте рисование");
       onOpenChange(false);
       navigate({ to: "/author/$carouselId", params: { carouselId: carousel.id } });
     } catch (error) {
@@ -128,13 +135,14 @@ export default function StartCarouselDialog({ open, onOpenChange, source, initia
         <DialogHeader>
           <DialogTitle className="text-[17px]">Собрать карусель</DialogTitle>
           <DialogDescription className="text-[12.5px] text-muted-foreground">
-            {source?.transcript
+            {textOnly ? "Текст и оформление карточек без героя, портрета и рисования." : source?.transcript
               ? "Автор разберёт сценарий рилса и перескажет его вашим героем."
               : isExactMode(mode) ? `Прочитаем все ${cards.length || ""} карточек и сохраним оформление оригинала.` : "Сюжет берём из поста, рисовку, цвета и шрифты — из выбранного вами стиля."}
           </DialogDescription>
         </DialogHeader>
 
-        {loadingStyles ? <p className="text-[12px] text-muted-foreground">Загружаю стили…</p> : styles.length === 0 && !mirror ? (
+        <fieldset className="flex gap-2"><legend className="mb-2 text-xs">Формат карточек</legend>{[["illustrated","С иллюстрациями"],["text","Только текст · без героя"]].map(([id,label])=><button key={id} type="button" disabled={Boolean(busy)} onClick={()=>{setFormat(id);setPickedHero(null);if(id==="illustrated" && style?.content_format==="text")setStyleId("");if(id==="text"){if(style?.content_format!=="text")setStyleId(styles.find(s=>s.content_format==="text")?.id || "");if(mode==="remix")setMode("adapt");}}} aria-pressed={format===id} className={cn("rounded-lg border px-3 py-2 text-sm",format===id?"border-primary bg-accent":"border-border")}>{label}</button>)}</fieldset>
+        {loadingStyles ? <p className="text-[12px] text-muted-foreground">Загружаю стили…</p> : styles.length === 0 && !mirror && !textOnly ? (
           <div className="rounded-lg border border-dashed border-border px-4 py-8 text-center">
             <p className="text-[13px] font-medium">Библиотека стилей пуста</p>
             <p className="mt-1 text-[12px] text-muted-foreground">Сначала снимите стиль в разделе «Мои стили».</p>
@@ -143,18 +151,18 @@ export default function StartCarouselDialog({ open, onOpenChange, source, initia
           <>
             {mirror && (
               <p className="rounded-lg border border-border/70 bg-[hsl(var(--muted))]/50 px-3 py-2 text-[11.5px] leading-snug text-muted-foreground">
-                В зеркале персонаж, палитра и шрифт берутся из оригинала. Своего героя выбрать нельзя — для него есть «Максимально близко» или «Адаптация».
+                {textOnly ? "В зеркале сохраняются текст, фон, шрифт и расположение блоков оригинала. Героя и иллюстраций не будет." : "В зеркале персонаж, палитра и шрифт берутся из оригинала. Своего героя выбрать нельзя — для него есть «Максимально близко» или «Адаптация»."}
               </p>
             )}
-            <div
+            {!mirror && <div
               aria-disabled={mirror}
               className={cn("max-h-[240px] space-y-1.5 overflow-y-auto pr-1", mirror && "pointer-events-none select-none opacity-40")}
             >
-              {styles.map((s) => (
+              {styles.filter(s=>!textOnly || s.content_format === "text").map((s) => (
                 <button
                   key={s.id}
                   disabled={mirror}
-                  onClick={() => { setStyleId(s.id); setPickedHero(null); }}
+                  onClick={() => { setStyleId(s.id); if(s.content_format === "text")setFormat("text"); setPickedHero(null); }}
                   className={cn(
                     "flex w-full items-center gap-3 rounded-lg border px-3 py-2.5 text-left transition-colors",
                     styleId === s.id ? "border-[hsl(var(--primary))]/60 bg-[hsl(var(--primary))]/[0.07]" : "border-border/70 hover:bg-[hsl(var(--accent))]/50",
@@ -166,14 +174,14 @@ export default function StartCarouselDialog({ open, onOpenChange, source, initia
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-[13px] font-medium">{!s.name || s.name.startsWith("undefined") ? (s.author_handle || "Стиль без названия") : s.name}</span>
                     <span className="block truncate text-[11px] text-muted-foreground">
-                      {s.hero?.name ? `герой: ${s.hero.name}` : "без героя"} · {(s.rules || []).length} правил
+                      {s.content_format === "text" ? "текстовый стиль · без героя" : s.hero?.name ? `герой: ${s.hero.name}` : "без героя"} · {(s.rules || []).length} правил
                     </span>
                   </span>
                 </button>
               ))}
-            </div>
+            </div>}
 
-            {!mirror && style && (
+            {!mirror && style && !textOnly && (
               <div className="space-y-2 rounded-lg border border-border/70 p-3">
                 <p className="text-[12px] font-medium">Стиль: {style.name} · шрифт {style.caption?.font || "из стиля"}</p>
                 <HeroPicker value={pickedHero?.id || ""} defaultName={style.hero?.name} onChange={(_id, hero) => setPickedHero(hero)} />
@@ -193,12 +201,13 @@ export default function StartCarouselDialog({ open, onOpenChange, source, initia
                   )}
                 >
                   <span className="block text-[12.5px] font-medium text-foreground">{m.label}</span>
-                  <span className="mt-0.5 block text-[11px] leading-snug">{m.hint}</span>
+                  <span className="mt-0.5 block text-[11px] leading-snug">{textOnly ? ({mirror:"Текст и расположение блоков как у конкурента.",remix:"Сохранить текст и оформление без персонажей.",adapt:"Смысл исходника, свои слова и типографика.",original:"Свои аргументы и текст по теме исходника."}[m.id]) : m.hint}</span>
                 </button>
               ))}
             </div>
 
-            <ImageModelPicker value={pickedImageModel ?? settings?.editorial?.image_model ?? settings?.image_model ?? "automatic"} onChange={setPickedImageModel} disabled={Boolean(busy)} />
+            {textOnly && <p className="text-xs text-muted-foreground">Герой и модель рисования не используются. Можно начать без сохранённого стиля: будет светлый фон, тёмный текст и цветной акцент. Для своих шрифтов и цветов создайте текстовый стиль в «Моих стилях».</p>}
+            {!textOnly && <ImageModelPicker value={pickedImageModel ?? settings?.editorial?.image_model ?? settings?.image_model ?? "automatic"} onChange={setPickedImageModel} disabled={Boolean(busy)} />}
             <div className="pt-1">
               <p className="mb-1.5 text-[10.5px] uppercase tracking-[0.12em] text-muted-foreground">язык текста</p>
               <div className="flex flex-wrap gap-1.5">
@@ -236,7 +245,7 @@ export default function StartCarouselDialog({ open, onOpenChange, source, initia
             {isExactMode(mode) && !source?.transcript && (
               <p className="text-[11.5px] leading-relaxed text-muted-foreground">
                 {cards.length
-                  ? `Прочитаю все ${cards.length} карточек дословно. Двойные кадры останутся двойными, каждый со своей сценой и подписью. Подпись под постом не заменяет текст карточек.`
+                  ? textOnly ? `Прочитаю текст всех ${cards.length} карточек и сохраню расположение блоков. Рисование не запускается.` : `Прочитаю все ${cards.length} карточек дословно. Двойные кадры останутся двойными, каждый со своей сценой и подписью. Подпись под постом не заменяет текст карточек.`
                   : "Нет изображений: точный режим остановится, а не придумает карусель по подписи."}
               </p>
             )}

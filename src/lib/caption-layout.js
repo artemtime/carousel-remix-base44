@@ -55,7 +55,7 @@ export function fitCaption(ctx,text,p,family,{width,height,startSize,maxLines=3,
 }
 export function captionArea(W,H,placement="overlay",profile={}) {
   const marginX=W*.045,marginY=Math.max(12,H*.045);
-  const fraction=placement==="strip"?Number(profile.strip_height || .16):placement==="band"?Number(profile.band_height || .24):.3;
+  const fraction=profile.text_only ? .82 : placement==="strip"?Number(profile.strip_height || .16):placement==="band"?Number(profile.band_height || .24):.3;
   const zone=Math.min(H-2*marginY,H*fraction);
   const inset=placement==="overlay"?0:Math.min(marginY,zone*.12);
   const desired=H*(profile.position ?? .8);

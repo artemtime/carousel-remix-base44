@@ -1,0 +1,4 @@
+export default function TextCardFields({slide,onChange}) {
+  const card=slide.reference_card;
+  return <div className="space-y-3"><p className="text-xs text-muted-foreground">Текстовая карточка: фон и типографика, без героя и рисования.</p>{card.text_blocks.map((block,i)=><label key={i} className="block text-xs">Текст {card.text_blocks.length>1?i+1:""}<textarea value={block.text} rows={6} onChange={e=>{const text_blocks=card.text_blocks.map((b,n)=>n===i?{...b,text:e.target.value}:b);onChange({text:text_blocks.map(b=>b.text).join("\n\n"),reference_card:{...card,text_blocks}});}} className="mt-1 w-full rounded-lg border border-border bg-background p-3 text-sm"/></label>)}<label className="text-xs">Фон <input type="color" value={card.background || "#FAF8F3"} onChange={e=>onChange({reference_card:{...card,background:e.target.value}})}/></label></div>;
+}

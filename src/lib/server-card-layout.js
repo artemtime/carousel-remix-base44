@@ -15,7 +15,7 @@ export function measuredFontContext(fontForWeight) {
 }
 export function captionSvg(text, profile, fontForWeight, width, height, id) {
   const p = profile, area = captionArea(width, height, p.placement, p);
-  const layout = fitCaption(measuredFontContext(fontForWeight), text, p, "font", { width: area.width, height: area.height, startSize: Math.round(p.size * width / 1080), minSize: Math.max(18, Math.round(width * .022)) });
+  const layout = fitCaption(measuredFontContext(fontForWeight), text, p, "font", { width: area.width, height: area.height, startSize: Math.round(p.size * width / 1080), maxLines:p.text_only?24:3, minSize: Math.max(18, Math.round(width * .022)) });
   const strip = p.placement === "strip" ? height * p.strip_height : 0;
   const center = p.placement === "strip" ? height - strip / 2 : p.placement === "band" ? height - height * p.band_height / 2 : height * p.position;
   const top = captionTop(area, layout.total, center);

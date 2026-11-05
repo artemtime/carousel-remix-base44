@@ -41,7 +41,7 @@ export default function SaveStyleDialog({ open, onOpenChange, carousel, onSaved 
         <DialogHeader>
           <DialogTitle className="text-[17px]">Сохранить стиль</DialogTitle>
           <DialogDescription className="text-[12.5px] text-muted-foreground">
-            Снимем с этого референса манеру рисования, палитру, шрифт и раскладку подписи. Дальше этот стиль можно прикладывать к любому залетевшему посту и к своему герою.
+            {carousel?.content_format === "text" ? "Сохраним фон, шрифт и цвета текстового референса. Портрет и герой не нужны." : "Снимем с этого референса манеру рисования, палитру, шрифт и раскладку подписи. Дальше этот стиль можно прикладывать к любому залетевшему посту и к своему герою."}
           </DialogDescription>
         </DialogHeader>
 
@@ -61,7 +61,7 @@ export default function SaveStyleDialog({ open, onOpenChange, carousel, onSaved 
         </label>
 
         <p className="text-[11.5px] leading-relaxed text-muted-foreground">
-          Персонажа из референса не копирую: в «Моих стилях» у стиля свой герой, его можно придумать или вписать словами. Пока героя нет — кадры рисуются с персонажами оригинала.
+          {carousel?.content_format === "text" ? "Новый стиль появится в «Моих стилях» как текстовый. Там можно изменить шрифт, фон и цвет текста." : "Персонажа из референса не копирую: в «Моих стилях» у стиля свой герой, его можно придумать или вписать словами. Пока героя нет — кадры рисуются с персонажами оригинала."}
         </p>
 
         <button

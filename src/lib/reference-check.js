@@ -117,7 +117,7 @@ export function unifiedFont(cards) {
 function checkCard(card, font) {
   // Own-style cards render through the full saved role typography. Do not
   // replace its fonts or resize/reflow source text boxes on every page load.
-  if (card.visual_mode === "own") return { ...card, text: card.text_blocks.map(block => block.text).join("\n\n") };
+  if (card.visual_mode === "own" || card.visual_mode === "text") return { ...card, text: card.text_blocks.map(block => block.text).join("\n\n") };
   const text_blocks = (card.text_blocks || []).map((block) => ({ ...block, font: font || block.font }));
   const next = repairCard({ ...card, text_blocks });
   return { ...next, text: next.text_blocks.map((block) => block.text).join("\n\n") };

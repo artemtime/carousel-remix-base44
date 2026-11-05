@@ -15,12 +15,13 @@ export async function serverFinalStep(base44, carouselId) {
   try {
     const pending = context.slides.find((s, i) => !s.final_image_url || s.final_render_key !== context.revision.keys[i] || s.final_check_status !== "ok");
     if (!pending) { await base44.entities.Carousel.update(carouselId, { final_ready:true, needs_finalization: false, finalization_error: "" }); return { done: true, ready: true }; }
-    if (pending.reference_card?.visual_mode !== "own") {
+    if (pending.reference_card?.visual_mode !== "own" && !(pending.reference_card?.visual_mode === "text" && pending.reference_card.text_design === "own")) {
       await base44.entities.Carousel.update(carouselId, { needs_finalization: false });
       return { done: true, manual: true, note: "Для точного режима соберите карточки в Авторе" };
     }
-    if (pending.final_renderer !== "server-v2") {
-      await base44.entities.Slide.update(pending.id, { final_renderer: "server-v2", final_check_status: "pending" });
+    const renderer=pending.reference_card?.visual_mode === "text" ? "server-text-v1" : "server-v2";
+    if (pending.final_renderer !== renderer) {
+      await base44.entities.Slide.update(pending.id, { final_renderer: renderer, final_check_status: "pending" });
       await invalidateApproval(base44, carouselId);
       context = await finalContext(base44, carouselId);
     }

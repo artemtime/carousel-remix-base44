@@ -10,6 +10,7 @@ import renderOwnStyleCard from "@/lib/own-style-canvas";
 export const ASPECTS = { "4:5": [1080, 1350], "3:4": [1080, 1440], "1:1": [1080, 1080] };
 
 export const DEFAULT_PROFILE = {
+  text_only: false,
   placement: "overlay", // overlay | band | strip
   font: "Montserrat",
   weight: 600,
@@ -186,7 +187,12 @@ function drawPlaceholder(ctx, x, y, w, h) {
 export async function renderSlide(canvas, options) {
   const { imageUrl, imageUrl2, text, profile, aspect = "4:5", layout = 1, proxy } = options;
   if (!canvas) return;
-  if (options.strict) {
+  const textCard=options.referenceCard?.visual_mode === "text";
+  if(textCard && options.referenceCard.text_design === "own") {
+    const card=options.referenceCard,[w,h]=card.aspect.split(":").map(Number);
+    return renderSlide(canvas,{...options,referenceCard:null,textOnly:true,strict:false,imageUrl:null,imageUrl2:null,text:card.text_blocks.map(b=>b.text).join("\n\n"),profile:card.own_caption,dimensions:[1080,Math.round(1080*h/w)],fixedCaption:true,background:card.background});
+  }
+  if (options.strict && !options.textOnly) {
     const count = options.referenceCard?.schema_version === 2 ? options.referenceCard.panels.length : imageUrl2 ? 2 : 1;
     const urls = [imageUrl, imageUrl2].slice(0, count);
     if (urls.length !== count || urls.some((url) => !url)) throw new Error("Не все кадры нарисованы");
@@ -211,9 +217,9 @@ export async function renderSlide(canvas, options) {
 
   // Кадры
   ctx.save();
-  ctx.fillStyle = "#101014";
+  ctx.fillStyle = options.textOnly ? options.background || "#FAF8F3" : "#101014";
   ctx.fillRect(0, 0, W, picH);
-  if (!images.length) {
+  if (options.textOnly) { /* Intentional flat background, no placeholder artwork. */ } else if (!images.length) {
     drawPlaceholder(ctx, 0, 0, W, picH);
   } else if (panels === 2) {
     const half = Math.floor(picH / 2);
@@ -255,7 +261,7 @@ export async function renderSlide(canvas, options) {
   const area=captionArea(W,H,prof.placement,prof);
   const startSize=Math.round(prof.size*W/1080);
   ctx.textBaseline="alphabetic";ctx.textAlign="left";
-  const laid=fitCaption(ctx,body,prof,family,{width:area.width,height:area.height,startSize,minSize:Math.max(18,Math.round(W*.022))});
+  const laid=fitCaption(ctx,body,prof,family,{width:area.width,height:area.height,startSize,maxLines:prof.text_only?24:3,minSize:Math.max(18,Math.round(W*.022))});
   let centerY;
   if(prof.placement==="strip")centerY=picH+stripH/2;
   else if(prof.placement==="band")centerY=picH-picH*prof.band_height/2;

@@ -10,9 +10,9 @@ import { listBufferChannels } from "@/lib/buffer.server";
 export async function editorialVisuals(base44, e) {
   if (!e.style_id) throw new Error("Выберите стиль редакции");
   const source = await base44.entities.MyStyle.get(e.style_id);
-  const heroId = e.hero_id || source.hero_id || "";
-  const hero = heroId ? await base44.entities.Hero.get(heroId) : source.hero;
-  const style = { ...source, hero, hero_id: heroId, hero_sheet_url: hero?.identity_reference_url || hero?.portrait_url || hero?.sheet_url || source.hero_sheet_url || "" };
+  const heroId = source.content_format === "text" ? "" : e.hero_id || source.hero_id || "";
+  const hero = source.content_format === "text" ? null : heroId ? await base44.entities.Hero.get(heroId) : source.hero;
+  const style = { ...source, hero, hero_id: heroId, hero_sheet_url: source.content_format === "text" ? "" : hero?.identity_reference_url || hero?.portrait_url || hero?.sheet_url || source.hero_sheet_url || "" };
   const signature = await digest({ visuals: visualContent(style, hero, "adapt"), caption: style.caption, typography: style.typography, aspect: style.aspect, image_model: e.image_model });
   return { style, hero, signature };
 }
@@ -47,8 +47,9 @@ export async function createEditorialProbe(base44, user, e) {
   await assertStudioRunning(base44);
   const { style, hero, signature } = await editorialVisuals(base44, e);
   const original = { schema_version: 2, aspect: style.aspect || "4:5", panels: [{ scene: "Герой из паспорта спокойно объясняет одну идею собеседнику в своём мире. Один непрерывный рисунок, полностью видны причёска и основные руки, никаких букв, рамок и пустых плашек.", bounds: { x: 0, y: 0, w: 1, h: 1 } }], text_blocks: [{ text: "Начните с одного понятного шага", panel_index: 0, bounds: { x: .08, y: .75, w: .84, h: .18 } }] };
-  const card = ownStyleCard(original, style, "hook");
-  const carousel = await createCarouselFromPlan(base44, { plan: { title: `Пробный образец · ${style.name}`, caption: "Образец редакции", slides: [{ role: "hook", scene: card.panels[0].scene, text: card.text_blocks.map(b => b.text).join("\n"), layout: 1, reference_card: card }] }, style: { ...style, hero }, mode: "adapt", language: "ru", imageModel: e.image_model, isProbe: true });
+  const {textCard}=await import("@/lib/text-cards");
+  const card = style.content_format === "text" ? textCard("Начните с одного понятного шага",style,"hook") : ownStyleCard(original, style, "hook");
+  const carousel = await createCarouselFromPlan(base44, { plan: { title: `Пробный образец · ${style.name}`, caption: "Образец редакции", slides: [{ role: "hook", scene: card.panels[0]?.scene || "", text: card.text_blocks.map(b => b.text).join("\n"), layout: 1, reference_card: card }] }, style: { ...style, hero }, mode: "adapt", language: "ru", imageModel: e.image_model, isProbe: true });
   await base44.entities.Carousel.update(carousel.id, { policy_signature: signature, needs_finalization: true });
   await enqueueRender(base44, user, { carouselId: carousel.id });
   return { carouselId: carousel.id };
@@ -69,5 +70,5 @@ export async function policyCanApprove(base44, settings, carousel) {
   const e = editorialSettings(settings);
   if (!e.configured || e.paused || !e.stages.approval || !e.template_signature || carousel.policy_revision !== settings.editorial_revision || !["adapt", "original"].includes(carousel.mode) || carousel.style_id !== e.style_id || carousel.image_model !== e.image_model) return false;
   const { signature, style } = await editorialVisuals(base44, e);
-  return signature === e.template_signature && signature === carousel.policy_signature && (carousel.hero_id || "") === (e.hero_id || style.hero_id || "");
+  return signature === e.template_signature && signature === carousel.policy_signature && (carousel.hero_id || "") === (style.content_format === "text" ? "" : e.hero_id || style.hero_id || "");
 }

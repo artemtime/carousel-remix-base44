@@ -8,6 +8,8 @@ Start with `README.md` for local setup and the publish workflow.
 
 ## Carousel frame rules (do not break)
 
+Text format (`content_format: text`) is independent of adaptation mode: zero artwork panels, no hero or image generation. Source modes keep OCR blocks; own modes use saved typography on a flat background. Final PNG checks and human approval remain mandatory. Never add a source character during reread, restyle, translation or editorial jobs.
+
 Visual rules depend on the selected mode; `src/lib/modes.js` is the user-facing contract.
 
 - **Mirror:** keep source characters, drawing style, palette, typography and composition.

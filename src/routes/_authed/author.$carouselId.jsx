@@ -73,7 +73,7 @@ function StudioPage() {
     // Проверка уже сохранённых слайдов: единый шрифт и разведённые подписи. Изменения сохраняем один раз.
     const checked = checkSlides((page.items || []).map((slide) => {
       const original = c.reference_profile?.cards?.[(slide.reference_index || slide.position) - 1];
-      if (!isExactMode(c.mode) || !original || slide.reference_card?.lettering_version === 1) return slide;
+      if (slide.reference_card?.visual_mode === "text" || !isExactMode(c.mode) || !original || slide.reference_card?.lettering_version === 1) return slide;
       return { ...slide, reference_card: withSourceLettering(slide.reference_card, original) };
     }));
     setSlides(checked.slides);
@@ -114,7 +114,7 @@ function StudioPage() {
     const before = slides.find((slide) => slide.id === id);
     const stale = stalePatch(before, { ...before, ...patch });
     setSlides((prev) => prev.map((s) => (s.id === id ? { ...s, ...patch, ...stale } : s)));
-    if (stale.image_stale) setCarousel((c) => ({ ...c, status: "plan" }));
+    setCarousel(c=>({...c,approved_key:"",final_ready:false,status:stale.image_stale?"plan":"review"}));
     const previous = saveTimers.current.get(id);
     clearTimeout(previous?.timer);
     const pending = { ...previous?.patch, ...patch };
@@ -233,7 +233,7 @@ function StudioPage() {
         for(const slide of snapshot.slides)await downloadArtifact(slide.final_image_url,`${slide.position}.png`,url=>proxy({data:{url}}));
         return;
       }
-      if(snapshot.slides.some(s=>s.image_stale || !s.image_url || s.reference_card?.panels?.length===2 && !s.image_url_2))throw new Error("Сначала завершите рисование всех кадров");
+      if(snapshot.slides.some(s=>s.reference_card?.visual_mode !== "text" && (s.image_stale || !s.image_url || s.reference_card?.panels?.length===2 && !s.image_url_2)))throw new Error("Сначала завершите рисование всех кадров");
       toast.info("Скачивается черновик. Для публикации проверьте и утвердите готовые карточки.");
       for (const slide of snapshot.slides) {
         const canvas = document.createElement("canvas");
@@ -297,7 +297,7 @@ function StudioPage() {
           >
             <Palette className="h-3.5 w-3.5" /> Стиль
           </button>
-          {progress ? (
+          {carousel.content_format !== "text" && (progress ? (
             <button onClick={async () => { await stopFn({ data: { taskId: progress.taskId } }); await load(); }} className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-[12px] hover:bg-[hsl(var(--accent))]">
               <Loader2 className="h-3.5 w-3.5 animate-spin" /> {progress.done}/{progress.total} · {progress.stopping ? "останавливаю…" : "пауза"}
             </button>
@@ -309,7 +309,7 @@ function StudioPage() {
             >
               <Wand2 className="h-4 w-4" /> {busy === "queue" ? "Готовлю кадры для очереди…" : "Нарисовать все"}
             </button>
-          )}
+          ))}
           <button
             onClick={downloadAll}
             disabled={busy === "download"}
@@ -336,11 +336,11 @@ function StudioPage() {
         />
 
         <div className="space-y-5">
-          <div className="rounded-xl border border-border/70 bg-[hsl(var(--card))] p-4">
-            <ImageModelPicker value={carousel.image_model || "automatic"} onChange={changeModel} disabled={Boolean(busy) || Boolean(progress) || carousel.status === "rendering"} />
+          {carousel.content_format !== "text" && <div className="rounded-xl border border-border/70 bg-[hsl(var(--card))] p-4">
+            {carousel.content_format !== "text" && <ImageModelPicker value={carousel.image_model || "automatic"} onChange={changeModel} disabled={Boolean(busy) || Boolean(progress) || carousel.status === "rendering"} />}
             <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">Выбор применяется к следующим рисункам и их исправлениям. Для замены готовой карточки нажмите «перерисовать». Во время рисования смена модели недоступна.</p>
             {Object.entries(active?.image_generations || {}).map(([panel, generation]) => <p key={panel} className="mt-1 text-[11px] text-muted-foreground">Рисунок {Number(panel) + 1}: {generation.model ? imageModelLabel(generation.model) : "автоматический выбор; модель не сообщена платформой"}</p>)}
-          </div>
+          </div>}
           <div className="rounded-xl border border-border/70 bg-[hsl(var(--card))] p-4">
             <SlideEditor
               slide={active}
@@ -349,7 +349,7 @@ function StudioPage() {
               drawingNote={drawStep}
               onChange={(patch) => active && updateSlide(active.id, patch)}
               onDraw={drawCurrent}
-              heroSlot={
+              heroSlot={carousel.content_format === "text" ? null :
                 <div className="rounded-lg border border-border/70 bg-[hsl(var(--muted))]/40 p-2.5">
                   <p className="mb-1.5 text-[10.5px] uppercase tracking-[0.12em] text-muted-foreground">герой карусели</p>
                   <div className={mirror ? "pointer-events-none opacity-40" : ""}>

@@ -69,7 +69,7 @@ export default function SlideCanvas({ slide, profile, aspect, className, width =
           onClick={() => setTick((t) => t + 1)}
           className="mt-1.5 inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground"
         >
-          <RefreshCw className="h-3 w-3" /> перерисовать
+          <RefreshCw className="h-3 w-3" /> обновить превью
         </button>
       )}
     </div>

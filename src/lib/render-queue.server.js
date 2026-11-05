@@ -18,13 +18,17 @@ async function slidesFor(base44,carouselId) {return (await base44.entities.Slide
 export async function renderVisuals(base44,carousel) {
   let style=carousel.style_id?await base44.entities.MyStyle.get(carousel.style_id):null;
   let hero=carousel.hero_id?await base44.entities.Hero.get(carousel.hero_id):style?.hero;
-  if(carousel.mode==="mirror") {hero=null;style={...style,hero:null,hero_sheet_url:""};}
+  if(carousel.mode==="mirror" || carousel.content_format==="text") {hero=null;style={...style,hero:null,hero_sheet_url:""};}
   else if(hero)style={...style,hero,hero_sheet_url:hero.identity_reference_url || hero.portrait_url || hero.sheet_url || style?.hero_sheet_url || ""};
   return {style,hero,key:await digest(visualContent(style,hero,carousel.mode))};
 }
 export async function enqueueRender(base44,user,{carouselId,slideId,panelTargets}) {
   await assertStudioRunning(base44);
   const initial=await base44.entities.Carousel.get(carouselId);
+  if(initial.content_format === "text") {
+    await base44.entities.Carousel.update(carouselId,{status:"review",hero_id:"",hero_name:""});
+    return {status:"done",total:0,completed:0};
+  }
   const existing=(await base44.entities.TaskQueue.filter({carousel_id:carouselId},{sort:"-created_date",limit:20})).items || [];
   const active=existing.find(job=>ACTIVE.includes(job.status));
   if(active) {
@@ -169,6 +173,7 @@ export async function saveSlideEdit(base44,{slideId,patch}) {
 }
 export async function setCarouselHero(base44,{carouselId,heroId}) {
   const carousel=await base44.entities.Carousel.get(carouselId);
+  if(carousel.content_format==="text")throw new Error("У текстовой карусели нет героя");
   if(carousel.mode==="mirror")throw new Error("В зеркале герой берётся из оригинала");
   const hero=heroId?await base44.entities.Hero.get(heroId):null;
   if(carousel.hero_id!==heroId) {

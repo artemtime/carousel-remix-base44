@@ -10,7 +10,7 @@ export function referenceImages(images = []) {
 export function validateReferenceCard(card) {
   const validBox = (b) => b && [b.x, b.y, b.w, b.h].every(Number.isFinite) && b.x >= 0 && b.y >= 0 && b.w > 0 && b.h > 0 && b.x + b.w <= 1.01 && b.y + b.h <= 1.01;
   if (!card?.readable || !/^\d+:\d+$/.test(card.aspect || "")) throw new Error("Не удалось уверенно прочитать карточку. План не будет придуман по подписи к посту.");
-  if (!Array.isArray(card.panels) || card.panels.length < 1 || card.panels.length > 2 || card.panels.some((p) => !p.scene || !validBox(p.bounds))) throw new Error("Не распознано разбиение карточки на кадры.");
+  if (!Array.isArray(card.panels) || (card.visual_mode !== "text" && card.panels.length < 1) || card.panels.length > 2 || card.panels.some((p) => !p.scene || !validBox(p.bounds))) throw new Error("Не распознано разбиение карточки на кадры.");
   if (!Array.isArray(card.text_blocks) || card.text_blocks.length > 30 || (card.has_text && !card.text_blocks.length)) throw new Error("Надписи не распознаны полностью. Генерация остановлена без пересказа.");
   card.text_blocks.forEach((block, i) => {
     if (typeof block.text !== "string" || !block.text.trim()) throw new Error(`Подпись ${i + 1} не прочитана.`);
@@ -34,12 +34,12 @@ export function validateReferenceCard(card) {
 export function referencePlan(profile) {
   if (profile?.schema_version !== 2 || !profile.cards?.length || profile.cards.length !== profile.cards_count) throw new Error("Нужен полный покарточный разбор оригинала, без пропусков.");
   const slides = profile.cards.map((raw, i) => {
-    const card = withSourceLettering(validateReferenceCard(raw));
+    const card = raw.visual_mode === "text" ? validateReferenceCard(raw) : withSourceLettering(validateReferenceCard(raw));
     return {
       role: i === 0 ? "hook" : i === profile.cards.length - 1 ? "cta" : "body",
       scene: card.panels.map((p, n) => `Кадр ${n + 1}: ${p.scene}`).join("\n"),
       text: card.text_blocks.map((b) => b.text).join("\n\n"),
-      layout: card.panels.length,
+      layout: card.panels.length || 1,
       ref_index: i + 1,
       reference_index: i + 1,
       reference_url: card.reference_url,

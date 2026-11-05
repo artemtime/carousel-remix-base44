@@ -8,6 +8,7 @@ import SlideCanvas from "@/components/SlideCanvas";
 import { Image } from "@/components/ui/image";
 import TypographyEditor from "@/components/styles/TypographyEditor";
 import SelectHeroReference from "@/components/heroes/SelectHeroReference";
+import TextStyleEditor from "@/components/styles/TextStyleEditor";
 import HeroPicker from "@/components/heroes/HeroPicker";
 import { makeHeroSheet } from "@/lib/author";
 import { heroPassport, saveHeroToLibrary } from "@/lib/heroes";
@@ -53,6 +54,8 @@ function StyleDetailPage() {
     setSaving(label);
     try {
       await base44.entities.MyStyle.update(styleId, {
+        content_format:style.content_format || "illustrated",
+        background:style.background || "",
         name: style.name,
         art_style: style.art_style,
         aspect: style.aspect,
@@ -134,6 +137,7 @@ function StyleDetailPage() {
 
   if (!style) return <p className="px-6 py-10 text-[12.5px] text-muted-foreground">Загружаю стиль…</p>;
 
+  if(style.content_format === "text")return <TextStyleEditor style={style} onChange={patch} saving={saving} onSave={()=>persist("save")}/>;
   return (
     <div className="fade-in">
       <div className="flex flex-wrap items-center gap-3 border-b border-border/70 px-5 py-4 md:px-8">

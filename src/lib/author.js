@@ -30,7 +30,7 @@ export const analyzeStyle = createServerFn({ method: "POST" })
 // Чертёж референса: все карточки выбранного поста разом.
 export const scanReference = createServerFn({ method: "POST" })
   .middleware([requireUser])
-  .validator(z.object({ images: z.array(z.string().max(3000)).min(1).max(20), caption: z.string().max(20000).nullish() }))
+  .validator(z.object({ images: z.array(z.string().max(3000)).min(1).max(20), caption: z.string().max(20000).nullish(), format: z.enum(["illustrated","text"]).optional() }))
   .handler(({ data, context }) => scanReferenceCore(context.getBase44(), data));
 
 export const suggestHeroes = createServerFn({ method: "POST" })
@@ -59,6 +59,7 @@ export const makePlan = createServerFn({ method: "POST" })
   .validator(
     z.object({
       style: z.any(),
+      format: z.enum(["illustrated","text"]).optional(),
       hero: z.any().optional(),
       rules: z.array(z.string()).optional(),
       settings: z.any().optional(),
@@ -91,6 +92,7 @@ export const drawScene = createServerFn({ method: "POST" })
     z.object({
       slide: z.any(),
       style: z.any(),
+      format: z.enum(["illustrated","text"]).optional(),
       hero: z.any().optional(),
       reference: z.string().nullish(),
       referenceCard: z.string().nullish(),
@@ -114,6 +116,7 @@ export const saveCarouselPlan = createServerFn({ method: "POST" })
     z.object({
       plan: z.any(),
       style: z.any(),
+      format: z.enum(["illustrated","text"]).optional(),
       source: z.any().optional(),
       mode: z.enum(["mirror", "remix", "adapt", "original"]),
       language: z.enum(["ru", "es", "en", "orig"]).optional(),

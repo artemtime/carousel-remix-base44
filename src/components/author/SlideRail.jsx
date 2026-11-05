@@ -22,7 +22,7 @@ export default function SlideRail({ slides, activeId, onSelect, profileOf, aspec
               {slide.position}. {ROLE[slide.role] || slide.role}
             </span>
             <span className="hidden truncate text-[10.5px] text-muted-foreground lg:block">
-              {slide.image_stale ? "нужна перерисовка" : slideReady(slide) ? "проверен" : slide.image_url ? "нужна проверка" : "ждёт картинку"}
+              {slide.image_stale ? "нужна перерисовка" : slideReady(slide) ? (slide.reference_card?.visual_mode === "text" ? "текст готов" : "проверен") : slide.image_url ? "нужна проверка" : "ждёт картинку"}
             </span>
           </span>
         </button>

@@ -34,7 +34,7 @@ export default function RestyleDialog({ open, onOpenChange, carousel, onDone }) 
     setError("");
     try {
       const res = await restyleFn({ data: { carouselId: carousel.id, styleId, mode } });
-      toast.success(`Пересобрано в стиле «${res.style_name}»: ${res.slides} слайдов, кадры рисуем заново`);
+      toast.success(`Пересобрано в стиле «${res.style_name}»: ${res.slides} слайдов. Проверьте новый результат`);
       onOpenChange(false);
       onDone?.();
     } catch (e) {
@@ -52,7 +52,7 @@ export default function RestyleDialog({ open, onOpenChange, carousel, onDone }) 
         <DialogHeader>
           <DialogTitle className="text-[17px]">Стиль и уровень</DialogTitle>
           <DialogDescription className="text-[12.5px] text-muted-foreground">
-            План собирается заново под выбранный стиль. Нарисованные кадры сбрасываются — их нужно отрисовать снова.
+            {carousel?.content_format === "text" ? "Текст и оформление собираются заново. Затем проверьте и утвердите готовые PNG; рисование не требуется." : "План собирается заново под выбранный стиль. Нарисованные кадры сбрасываются — их нужно отрисовать снова."}
           </DialogDescription>
         </DialogHeader>
 
@@ -63,7 +63,7 @@ export default function RestyleDialog({ open, onOpenChange, carousel, onDone }) 
         ) : (
           <>
             <div className="max-h-[200px] space-y-1.5 overflow-y-auto pr-1">
-              {styles.map((s) => (
+              {styles.filter(s=>carousel?.content_format !== "text" || s.content_format === "text").map((s) => (
                 <button
                   key={s.id}
                   onClick={() => setStyleId(s.id)}
@@ -96,7 +96,7 @@ export default function RestyleDialog({ open, onOpenChange, carousel, onDone }) 
                   )}
                 >
                   <span className="block text-[12.5px] font-medium text-foreground">{m.label}</span>
-                  <span className="mt-0.5 block text-[11px] leading-snug">{m.hint}</span>
+                  <span className="mt-0.5 block text-[11px] leading-snug">{carousel?.content_format === "text" ? ({mirror:"Текст и оформление исходника без иллюстраций.",remix:"Сохранить слова и типографику без героя.",adapt:"Смысл исходника своими словами и в своём оформлении.",original:"Новые аргументы и текст по теме исходника."}[m.id]) : m.hint}</span>
                 </button>
               ))}
             </div>

@@ -69,6 +69,14 @@
     },
     "background": {
       "type": "string"
+    },
+    "content_format": {
+      "type": "string",
+      "enum": [
+        "illustrated",
+        "text"
+      ],
+      "description": "Text cards have no hero or generated artwork; old records remain illustrated."
     }
   },
   "required": [

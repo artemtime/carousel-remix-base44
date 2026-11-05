@@ -1,5 +1,6 @@
 // Одно условие готовности для редактора, очереди, экспорта и Telegram.
 export function panelCount(slide) {
+  if(slide?.reference_card?.visual_mode === "text")return 0;
   // Reference cards store separate panel images; older plans generate one complete illustration.
   return slide?.reference_card?.panels?.length || (slide?.image_url_2 ? 2 : 1);
 }
@@ -12,6 +13,7 @@ export function panelReady(slide, index) {
   return slide.critic_status === "ok";
 }
 export function slideReady(slide) {
+  if(slide?.reference_card?.visual_mode === "text")return Boolean(slide.text?.trim()) && !slide.image_stale;
   return Boolean(slide) && slide.status === "drawn" && slide.critic_status === "ok"
     && Array.from({ length: panelCount(slide) }, (_, i) => panelReady(slide, i)).every(Boolean);
 }
@@ -34,6 +36,7 @@ export function sceneKey(slide) {
     visual: slide?.reference_card ? { mode: slide.reference_card.visual_mode, art_style: slide.reference_card.art_style, palette: slide.reference_card.palette, aspect: slide.reference_card.aspect, lighting: slide.reference_card.lighting, background: slide.reference_card.background, world: slide.reference_card.world, references: slide.reference_card.style_reference_urls } : null });
 }
 export function stalePatch(before, after) {
+  if(after?.reference_card?.visual_mode === "text")return {};
   return sceneKey(before) === sceneKey(after) ? {} : {
     image_stale: true, render_token: "", final_check_status: "pending", status: "planned", critic_status: "pending", panel_checks: [],
     critic_note: "Сцена изменилась — нужно перерисовать кадры",

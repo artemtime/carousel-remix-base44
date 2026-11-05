@@ -254,6 +254,11 @@ async function prepareOwnStyle(base44, style) {
 export async function planCore(base44, params) {
   params = { ...params, rules: [...(params.rules || []), briefPrompt(params.settings)].filter(Boolean) };
   const mode = params.mode || "remix";
+  if(params.format === "text" || params.style?.content_format === "text") {
+    const {planTextCarousel} = await import("@/lib/text-cards.server");
+    const settings=withCta(params.settings || {},params.language);
+    return planTextCarousel(base44,{...params,mode},{localize:plan=>localizePlan(base44,plan,{language:params.language,settings}),finish:plan=>applyConfirmedCta(plan,settings,params.language)});
+  }
   // Призыв берём из памяти языка публикации: он главнее настроек и одинаков
   // и в плане, и в переводе надписей точных режимов.
   const settings = withCta(params.settings || {}, params.language);
@@ -315,7 +320,7 @@ export async function reviseCore(base44, { plan, instruction, rules, language })
     if (slide.text_blocks?.length !== card.text_blocks.length || slide.panel_scenes?.length !== card.panels.length) throw new Error("Правка объединила подписи или кадры и не сохранена. Их можно изменить отдельно в редакторе.");
     const text_blocks = card.text_blocks.map((block, n) => ({ ...block, text: slide.text_blocks[n] }));
     const panels = card.panels.map((panel, n) => ({ ...panel, scene: slide.panel_scenes[n] }));
-    return { ...original, ...slide, layout: panels.length, text: text_blocks.map((block) => block.text).join("\n\n"), scene: panels.map((panel, n) => `Кадр ${n + 1}: ${panel.scene}`).join("\n"), reference_card: { ...card, text_blocks, panels } };
+    return { ...original, ...slide, layout: panels.length || 1, text: text_blocks.map((block) => block.text).join("\n\n"), scene: panels.map((panel, n) => `Кадр ${n + 1}: ${panel.scene}`).join("\n"), reference_card: { ...card, text_blocks, panels } };
   });
   return checkPlanCards(next);
 }
@@ -338,6 +343,7 @@ async function drawClean(base44, prompt, refs) {
 }
 
 export async function drawCore(base44, { slide, style, hero, reference, fix, referenceCard, cardBrief, profile, panelIndex, cardCrop }) {
+  if(slide?.reference_card?.visual_mode === "text")throw new Error("Текстовая карточка собирается без генерации изображений. Используйте «Проверить карточки».");
   if (slide?.reference_card?.schema_version === 2) {
     const card = slide.reference_card;
     const index = panelIndex ?? 0;
@@ -549,6 +555,12 @@ export async function styleFromReferenceCore(base44, { carouselId, name }) {
   const profile = carousel.reference_profile?.schema_version === 2 ? carousel.reference_profile : null;
   const images = (carousel.reference_images || []).slice(0, 8);
   if (!profile || !images.length) throw new Error("Стиль снимается с разобранного оригинала: соберите карусель в режиме «Зеркало» или «Максимально близко».");
+  if(carousel.content_format === "text") {
+    const {textStyle}=await import("@/lib/text-cards");
+    const card=profile.cards[0], block=card.text_blocks[0];
+    const record=await base44.entities.MyStyle.create(textStyle({name:String(name || `${carousel.source_handle || "Текст"} · ${block.font}`).slice(0,120),aspect:nearestAspect(profile.aspect),background:card.background,caption:{font:block.font,weight:block.weight,color:block.color,size:Math.max(32,Math.min(96,Math.round(block.font_size*1350)))} }));
+    return {id:record.id,name:record.name,aspect:record.aspect,content_format:"text"};
+  }
   const look = await analyzeStyleCore(base44, images);
   const font = profile.cards?.[0]?.text_blocks?.[0]?.font || look.font_kind || "стиль";
   const record = await base44.entities.MyStyle.create({
@@ -577,7 +589,7 @@ async function replaceCarouselSlides(base44, carouselId, plan) {
   const updates = [];
   const creates = [];
   rows.forEach((slide, i) => {
-    const row = { ...slideRecord(slide, i + 1), image_url: "", image_url_2: "", image_stale: false, panel_checks: [], status: "planned", critic_status: "pending", critic_note: "",
+    const row = { ...slideRecord(slide, i + 1), final_image_url:"",final_render_key:"",final_check_status:"pending",final_check_note:"",final_check_result:{}, final_renderer:slide.reference_card?.visual_mode === "text" && slide.reference_card.text_design === "own" ? "server-text-v1" : "", image_url: "", image_url_2: "", image_stale: false, panel_checks: [], status: "planned", critic_status: "pending", critic_note: "",
       previous_images: { image_url: page.items[i]?.image_url || "", image_url_2: page.items[i]?.image_url_2 || "" } };
     // Неточные режимы не должны унаследовать покарточный оригинал от прошлой сборки.
     if (!slide.reference_card) Object.assign(row, { reference_card: null, reference_url: "", reference_index: 0, reference_brief: "" });
@@ -598,9 +610,10 @@ export async function restyleCarouselCore(base44, { carouselId, styleId, mode, l
   const nextStyleId = styleId || carousel.style_id;
   if (!nextStyleId) throw new Error("У карусели нет стиля: сначала выберите стиль.");
   const savedStyle = await base44.entities.MyStyle.get(nextStyleId);
-  const heroId = nextMode === "mirror" ? "" : carousel.style_id === nextStyleId && carousel.hero_id ? carousel.hero_id : savedStyle.hero_id || "";
+  const textOnly=carousel.content_format === "text" || savedStyle.content_format === "text";
+  const heroId = textOnly || nextMode === "mirror" ? "" : carousel.style_id === nextStyleId && carousel.hero_id ? carousel.hero_id : savedStyle.hero_id || "";
   const selectedHero = heroId ? await base44.entities.Hero.get(heroId) : savedStyle.hero;
-  const style = { ...savedStyle, hero: selectedHero, hero_id: heroId, hero_sheet_url: selectedHero?.sheet_url || savedStyle.hero_sheet_url || "" };
+  const style = { ...savedStyle, ...(textOnly?{content_format:"text"}:{}), hero: textOnly?null:selectedHero, hero_id: heroId, hero_sheet_url: selectedHero?.sheet_url || savedStyle.hero_sheet_url || "" };
   const exact = isExactMode(nextMode);
   // «Как в оригинале» существует только в «Зеркале»: остальные уровни всегда говорят на языке.
   const requested = language || carousel.language || "ru";
@@ -609,7 +622,7 @@ export async function restyleCarouselCore(base44, { carouselId, styleId, mode, l
   if (!profile && carousel.source_post_id) {
     const source = await base44.entities.SourcePost.get(carousel.source_post_id);
     if (source.slide_images?.length) {
-      profile = await readReference(base44, { images: source.slide_images, caption: source.caption_text || "" });
+      profile = await readReference(base44, { images: source.slide_images, caption: source.caption_text || "", format: textOnly ? "text" : "illustrated" });
       // Reading a source is a separate expensive step. Preserve its successful
       // result even if the later planner/style service fails.
       await base44.entities.Carousel.update(carouselId, { reference_profile: profile,
@@ -637,6 +650,8 @@ export async function restyleCarouselCore(base44, { carouselId, styleId, mode, l
   });
   const count = await replaceCarouselSlides(base44, carouselId, plan);
   await base44.entities.Carousel.update(carouselId, {
+    content_format: textOnly ? "text" : "illustrated",
+    approved_key:"",approved_at:"",approved_by:"",final_ready:false,
     style_id: style.id,
     style_name: style.name,
     hero_id: nextMode === "mirror" ? "" : style.hero_id || "",
@@ -711,7 +726,9 @@ export async function scoutDigestCore(base44, { limit = 8 } = {}) {
 
 export async function createCarouselFromPlan(base44, { plan, style, source, mode, language, imageModel, editorialItemId, isProbe }) {
   const model = normalizeImageModel(imageModel ?? (await base44.entities.Settings.list({ sort: "-created_date", limit: 1 })).items?.[0]?.image_model);
-  if (mode !== "mirror" && style?.hero_id) {
+  const textOnly = plan.content_format === "text" || Boolean(plan.slides?.length && plan.slides.every(s=>s.reference_card?.visual_mode === "text"));
+  if(textOnly)style={...style,content_format:"text",hero:null,hero_id:"",hero_sheet_url:""};
+  if (!textOnly && mode !== "mirror" && style?.hero_id) {
     const hero = await base44.entities.Hero.get(style.hero_id);
     style = { ...style, hero, hero_sheet_url: hero.sheet_url || style.hero_sheet_url || "" };
   }
@@ -737,12 +754,13 @@ export async function createCarouselFromPlan(base44, { plan, style, source, mode
   const carousel = await base44.entities.Carousel.create({
     ...(editorialItemId ? {editorial_item_id:editorialItemId} : {}),
     ...(isProbe ? {is_probe:true} : {}),
+    content_format: textOnly ? "text" : "illustrated",
     image_model: model,
     title: plan.title || "Без названия",
     style_id: style?.id || "",
     style_name: style?.name || "",
-    hero_id: mode === "mirror" ? "" : style?.hero_id || "",
-    hero_name: mode === "mirror" ? "" : style?.hero?.name || "",
+    hero_id: textOnly || mode === "mirror" ? "" : style?.hero_id || "",
+    hero_name: textOnly || mode === "mirror" ? "" : style?.hero?.name || "",
     source_post_id: postId,
     source_url: source?.url || "",
     source_handle: source?.handle || "",
@@ -759,7 +777,8 @@ export async function createCarouselFromPlan(base44, { plan, style, source, mode
       carousel_id: carousel.id,
       ...slideRecord(s, i + 1),
       status: "planned",
-      critic_status: "pending",
+      critic_status: s.reference_card?.visual_mode === "text" ? "ok" : "pending",
+      ...(s.reference_card?.visual_mode === "text" && s.reference_card.text_design === "own" ? {final_renderer:"server-text-v1"} : {}),
     })),
   );
   return carousel;
@@ -779,7 +798,7 @@ export async function seriesPostCore(base44, { styleId, topic, angle, index = 1,
   const style = await base44.entities.MyStyle.get(styleId);
   const settingsPage = await base44.entities.Settings.list({ sort: "-created_date", limit: 1 });
   const plan = await planCore(base44, {
-    style: { aspect: style.aspect, art_style: style.art_style, world: style.world },
+    style: { ...style },
     hero: style.hero,
     rules: style.rules || [],
     settings: (settingsPage.items || [])[0] || {},
